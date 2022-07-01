@@ -1,0 +1,10 @@
+{
+    "postgresql": {
+        "host": "localhost",
+        "port": "5432",
+        "user": "postgres",
+        "pass": "Bocajuniors12",
+        "database": "dmo_cargas"
+
+    }
+}

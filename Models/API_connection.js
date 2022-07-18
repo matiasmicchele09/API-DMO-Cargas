@@ -1,9 +1,15 @@
-const { Client } = require('pg')
+ const { Client } = require('pg')
+ const config = require('./db_config.json')
 
-const client = new Client()
-await client.connect()
+ const connection = new Client({
+     user: config.postgresql.user,
+     host: config.postgresql.host,
+     database: config.postgresql.database,
+     password: config.postgresql.pass,
+     port: config.postgresql.port
+ })
 
-const res = await client.query('SELECT * FROM usuarios')
+ connection.connect();
 
-console.log(res.rows[0].message) // Hello world!
-await client.end()
+
+ module.exports = connection;

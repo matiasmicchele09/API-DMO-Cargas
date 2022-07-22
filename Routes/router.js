@@ -10,5 +10,6 @@ const API_Controller = require('../Controllers/controller'),
 
 router.get('/', API_Controller.getAll);
 router.post('/signUp', upload.none(), API_Controller.insert);
+router.post('/signIn', upload.none(), API_Controller.select);
 
 module.exports = router;

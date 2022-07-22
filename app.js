@@ -5,10 +5,8 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
     routes = require('./Routes/router'),
-
     //faviconURL = `${__dirname}` CREAR/BUSCAR UN FAVICON - NO CREO SEA NECESARIO, TOTAL NO USO EL BACK COMO FRONT PARA PONER FAVICON
     port = (process.env.PORT || 3000),
-
     app = express();
 
 //Configurando la app

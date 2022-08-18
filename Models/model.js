@@ -18,8 +18,14 @@ API_Model.getOne = (id, cb) => conn.query('SELECT * FROM usuarios WHERE email = 
 
 API_Model.register = (data, cb) => {
 
-    console.log(data); //probar poner el objeto asi --> [data], en vez de ponerlo de a uno
-    conn.query('INSERT INTO usuarios (razon_social, cuit_cuil, tipo_persona, email, password) VALUES ($1, $2, $3, $4, $5)', [data.razon_social, data.cuit_cuil, data.tipo_persona, data.email, data.password], cb)
+    console.log(data); //probar poner el objeto asi --> [data], en vez de ponerlo de a uno. NO FUNCIONó
+    conn.query('INSERT INTO usuarios (razon_social, cuit_cuil, email, password, tipo_usuario) VALUES ($1, $2, $3, $4, $5)', [data.razon_social, data.cuit_cuil, data.email, data.password, data.tipo_usuario], cb)
+}
+
+API_Model.update_profile = (data, cb) => {
+
+    console.log(data);
+    conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, email = $3, password = $4, fec_nacim = $5 WHERE email = $3', [data.razon_social, data.cuit_cuil, data.email, data.password, data.fec_nacim], cb)
 }
 
 API_Model.close = () => conn.end()

@@ -8,7 +8,7 @@ API_Controller.getAll = (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(rows.rows);
+            //console.log(rows.rows);
             res.end(JSON.stringify(rows.rows))
         }
     })
@@ -54,7 +54,7 @@ API_Controller.getOne = (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(rows.rows);
+            //console.log(rows.rows);
             res.end(JSON.stringify(rows.rows))
         }
     })
@@ -64,10 +64,19 @@ API_Controller.register = (req, res) => {
 
     /* Tuve que definir una variable (obj) objeto porque sino me tiraba un error, me lo creaba como un objeto vacio, no se porque. Esta en imagenes en Notion */
     let obj = Object.assign({}, req.body);
-    console.log(obj);
     API_Model.register(obj, (err) => {
         console.log(err);
     })
 }
+
+API_Controller.update_profile = (req, res) => {
+
+    let obj = Object.assign({}, req.body);
+    API_Model.update_profile(obj, (err) => {
+        console.log(err);
+    })
+}
+
+
 
 module.exports = API_Controller;

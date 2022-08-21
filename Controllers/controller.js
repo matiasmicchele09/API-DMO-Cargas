@@ -14,6 +14,28 @@ API_Controller.getAll = (req, res) => {
     })
 }
 
+API_Controller.getAllTruck = (req, res) => {
+    API_Model.getAllTruck((err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+API_Controller.getCarroceria = (req, res) => {
+    API_Model.getCarroceria((err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
 //Log In
 API_Controller.logIn = (req, res) => {
 
@@ -49,8 +71,8 @@ API_Controller.logIn = (req, res) => {
 
 API_Controller.getOne = (req, res) => {
 
-    let email = req.params.email;
-    API_Model.getOne(email, (err, rows) => {
+    let cod_usuario = req.params.cod_usuario;
+    API_Model.getOne(cod_usuario, (err, rows) => {
         if (err) {
             console.log(err);
         } else {

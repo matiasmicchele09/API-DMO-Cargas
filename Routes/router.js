@@ -16,8 +16,14 @@ router.post('/logIn', upload.none(), API_Controller.logIn);
 //Profile
 router.post('/update_profile', upload.none(), API_Controller.update_profile);
 
-router.get('/dashboard/:email', API_Controller.getOne);
-router.get('/my_profile/:email', API_Controller.getOne);
+router.get('/dashboard/:cod_usuario', API_Controller.getOne);
+router.get('/my_profile/:cod_usuario', API_Controller.getOne);
+
+//Get para Tipo Camiones
+router.get('/getTruck', API_Controller.getAllTruck);
+
+//Get para Tipo Carroceria
+router.get('/getCarroceria', API_Controller.getCarroceria);
 
 
 module.exports = router;

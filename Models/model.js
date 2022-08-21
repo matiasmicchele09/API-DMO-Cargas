@@ -8,13 +8,21 @@ API_Model.getAll = (cb) => {
     conn.query('SELECT * FROM usuarios', cb)
 }
 
+API_Model.getAllTruck = (cb) => {
+    conn.query('SELECT * FROM tipos_camiones', cb)
+}
+
+API_Model.getCarroceria = (cb) => {
+    conn.query('SELECT * FROM tipos_carrocerias', cb)
+}
+
 API_Model.logIn = (data, cb) => {
     //console.log(data);
-    conn.query('SELECT email, password FROM usuarios WHERE email = $1 AND password = $2', [data.email, data.password], cb)
+    conn.query('SELECT cod_usuario, email, password FROM usuarios WHERE email = $1 AND password = $2', [data.email, data.password], cb)
 
 }
 
-API_Model.getOne = (id, cb) => conn.query('SELECT * FROM usuarios WHERE email = $1', [id], cb)
+API_Model.getOne = (id, cb) => conn.query('SELECT * FROM usuarios WHERE cod_usuario = $1', [id], cb)
 
 API_Model.register = (data, cb) => {
 

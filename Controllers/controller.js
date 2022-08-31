@@ -175,4 +175,17 @@ API_Controller.getTrucksUser = (req, res) => {
         console.log("La sesión esta cerrada");
     }
 }*/
+
+//Get para Tipo de Carga
+API_Controller.getAllTiposCarga = (req, res) => {
+    API_Model.getAllTiposCarga((err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
 module.exports = API_Controller;

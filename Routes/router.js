@@ -18,7 +18,7 @@ router.post('/logIn', upload.none(), API_Controller.logIn);
 router.post('/update_profile', upload.none(), API_Controller.update_profile);
 router.get('/dashboard/:cod_usuario', API_Controller.getOne);
 router.get('/my_profile/:cod_usuario', API_Controller.getOne);
-
+/* --------------------------------------- TRANSPORTISTAS --------------------------------------- */
 //Get para Tipo Camiones
 router.get('/getAllTypeTruck', API_Controller.getAllTypeTruck);
 router.get('/getOneTypeTruck/:cod_tipo_camion', API_Controller.getOneTypeTruck);
@@ -39,4 +39,12 @@ router.put('/update_truck', upload.none(), API_Controller.updateTruck);
 
 //Todos los camiones de un usuario
 router.get('/getTrucksUser/:cod_usuario', API_Controller.getTrucksUser);
+
+/* --------------------------------------- DADORES DE CARGA --------------------------------------- */
+//Get para Tipo de Carga
+router.get('/getAllTiposCargas', API_Controller.getAllTiposCarga);
+
+
+
+
 module.exports = router;

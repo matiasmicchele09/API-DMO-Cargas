@@ -52,6 +52,11 @@ API_Model.getTrucksUser = (id, cb) => {
     conn.query('SELECT * FROM camiones WHERE cod_usuario = $1', [id], cb)
 }
 
+//Get para Tipo de Carga
+API_Model.getAllTiposCarga = (cb) => {
+    conn.query('SELECT * FROM tipos_cargas', cb)
+}
+
 API_Model.close = () => conn.end()
 
 module.exports = API_Model;

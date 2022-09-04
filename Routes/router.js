@@ -44,7 +44,21 @@ router.get('/getTrucksUser/:cod_usuario', API_Controller.getTrucksUser);
 //Get para Tipo de Carga
 router.get('/getAllTiposCargas', API_Controller.getAllTiposCarga);
 
+//Get para Tipo Producto
+router.get('/getAllTiposProducto/:tipo_carga', API_Controller.getAllTiposProducto);
 
+//Get Estado Carga: Publicada
+router.get('/getOneEstadoCarga/:cod_estado', API_Controller.getOneEstadoCarga);
 
+//Agregar Carga
+router.post('/add_freight', upload.none(), API_Controller.add_freight);
+
+//Todos las cargas de un usuario
+router.get('/getCargasUser/:cod_usuario', API_Controller.getCargasUser);
+
+router.get('/getOneTipoCarga/:cod_tipo_carga', API_Controller.getOneTipoCarga);
+router.get('/getOneTipoProducto/:cod_tipo_producto', API_Controller.getOneTipoProducto);
+router.get('/getOneTipoEstado/:cod_estado', API_Controller.getOneTipoEstado);
+router.get('/getOneCargaUser/:cod_carga', API_Controller.getOneCargaUser);
 
 module.exports = router;

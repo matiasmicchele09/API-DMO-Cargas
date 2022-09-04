@@ -188,4 +188,108 @@ API_Controller.getAllTiposCarga = (req, res) => {
     })
 }
 
+//Get para Tipo Producto
+API_Controller.getAllTiposProducto = (req, res) => {
+    let tipo_carga = req.params.tipo_carga;
+    console.log(tipo_carga);
+    API_Model.getAllTiposProducto(tipo_carga, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Get Estado Carga: Publicada
+API_Controller.getOneEstadoCarga = (req, res) => {
+
+    let cod_estado = req.params.cod_estado;
+    API_Model.getOneEstadoCarga(cod_estado, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Agregar Carga
+API_Controller.add_freight = (req, res) => {
+
+    /* Tuve que definir una variable (obj) objeto porque sino me tiraba un error, me lo creaba como un objeto vacio, no se porque. Esta en imagenes en Notion */
+    let obj = Object.assign({}, req.body);
+    console.log(obj);
+    API_Model.add_freight(obj, (err) => {
+        console.log(err);
+    })
+}
+
+//Todos las cargas de un usuario
+API_Controller.getCargasUser = (req, res) => {
+
+    let cod_usuario = req.params.cod_usuario;
+    API_Model.getCargasUser(cod_usuario, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+API_Controller.getOneTipoCarga = (req, res) => {
+
+    let tipo_carga = req.params.cod_tipo_carga;
+    API_Model.getOneTipoCarga(tipo_carga, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+API_Controller.getOneTipoProducto = (req, res) => {
+
+    let tipo_producto = req.params.cod_tipo_producto;
+    API_Model.getOneTipoProducto(tipo_producto, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+API_Controller.getOneTipoEstado = (req, res) => {
+
+    let estado = req.params.cod_estado;
+    API_Model.getOneTipoEstado(estado, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+API_Controller.getOneCargaUser = (req, res) => {
+
+    let cod_carga = req.params.cod_carga;
+    API_Model.getOneCargaUser(cod_carga, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
 module.exports = API_Controller;

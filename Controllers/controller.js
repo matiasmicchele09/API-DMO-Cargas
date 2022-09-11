@@ -231,9 +231,10 @@ API_Controller.add_freight = (req, res) => {
 API_Controller.getCargasUser = (req, res) => {
 
     let cod_usuario = req.params.cod_usuario;
+    console.log(cod_usuario);
     API_Model.getCargasUser(cod_usuario, (err, rows) => {
         if (err) {
-            console.log(err);
+            // console.log('Error:', err);
         } else {
             //console.log(rows.rows);
             res.end(JSON.stringify(rows.rows))
@@ -291,5 +292,27 @@ API_Controller.getOneCargaUser = (req, res) => {
         }
     })
 }
+
+//Eliminar Carga
+API_Controller.deleteCarga = (req, res, next) => {
+    let cod_carga = req.params.cod_carga
+    API_Model.deleteCarga(cod_carga, (err, rows) => {
+
+        if (err) {
+            console.log(err);
+        }
+    })
+
+}
+
+API_Controller.updateCarga = (req, res) => {
+
+    let obj = Object.assign({}, req.body);
+    console.log(obj);
+    API_Model.updateCarga(obj, (err) => {
+        console.log(err);
+    })
+}
+
 
 module.exports = API_Controller;

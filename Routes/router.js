@@ -31,7 +31,7 @@ router.get('/getOneTipoCarroceria/:cod_tipo_carroceria', API_Controller.getOneTi
 router.post('/add_truck', upload.none(), API_Controller.add_truck);
 
 //Eliminar Camión
-router.delete('/delete/:patente', API_Controller.deleteTruck)
+router.delete('/delete/:patente', API_Controller.deleteTruck);
 
 //Editar Camión
 router.get('/my_truck/:patente', API_Controller.getOneTruck);
@@ -60,5 +60,7 @@ router.get('/getOneTipoCarga/:cod_tipo_carga', API_Controller.getOneTipoCarga);
 router.get('/getOneTipoProducto/:cod_tipo_producto', API_Controller.getOneTipoProducto);
 router.get('/getOneTipoEstado/:cod_estado', API_Controller.getOneTipoEstado);
 router.get('/getOneCargaUser/:cod_carga', API_Controller.getOneCargaUser);
+router.delete('/delete_carga/:cod_carga', API_Controller.deleteCarga);
+router.put('/update_carga', upload.none(), API_Controller.updateCarga);
 
 module.exports = router;

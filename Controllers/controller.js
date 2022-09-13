@@ -115,18 +115,6 @@ API_Controller.add_truck = (req, res) => {
     })
 }
 
-//Eliminar Camión
-API_Controller.deleteTruck = (req, res, next) => {
-    let patente = req.params.patente
-    API_Model.deleteTruck(patente, (err, rows) => {
-
-        if (err) {
-            console.log(err);
-        }
-    })
-
-}
-
 //Editar Camión
 API_Controller.getOneTruck = (req, res) => {
 
@@ -148,11 +136,79 @@ API_Controller.updateTruck = (req, res) => {
     })
 }
 
+//Eliminar Camión
+API_Controller.deleteTruck = (req, res, next) => {
+    let patente_camion = req.params.patente_camion
+    API_Model.deleteTruck(patente_camion, (err, rows) => {
+
+        if (err) {
+            console.log(err);
+        }
+    })
+}
+
 //Todos los camiones de un usuario
 API_Controller.getTrucksUser = (req, res) => {
 
     let cod_usuario = req.params.cod_usuario;
     API_Model.getTrucksUser(cod_usuario, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Agregar Carrocería
+API_Controller.add_carroceria = (req, res) => {
+
+    /* Tuve que definir una variable (obj) objeto porque sino me tiraba un error, me lo creaba como un objeto vacio, no se porque. Esta en imagenes en Notion */
+    let obj = Object.assign({}, req.body);
+    console.log(obj);
+    API_Model.add_carroceria(obj, (err) => {
+        console.log(err);
+    })
+}
+
+//Editar Carrocería
+API_Controller.getOneCarroceria = (req, res) => {
+
+    let patente_carroceria = req.params.patente_carroceria;
+    API_Model.getOneCarroceria(patente_carroceria, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+API_Controller.updateCarroceria = (req, res) => {
+
+    let obj = Object.assign({}, req.body);
+    API_Model.updateCarroceria(obj, (err) => {
+        console.log(err);
+    })
+}
+
+//Eliminar Carrocería
+API_Controller.deleteCarroceria = (req, res, next) => {
+    let patente_carroceria = req.params.patente_carroceria
+    API_Model.deleteCarroceria(patente_carroceria, (err, rows) => {
+
+        if (err) {
+            console.log(err);
+        }
+    })
+}
+
+//Todos las carrocerias de un usuario
+API_Controller.getCarroceriasUser = (req, res) => {
+
+    let cod_usuario = req.params.cod_usuario;
+    API_Model.getCarroceriasUser(cod_usuario, (err, rows) => {
         if (err) {
             console.log(err);
         } else {
@@ -242,6 +298,7 @@ API_Controller.getCargasUser = (req, res) => {
     })
 }
 
+//Get One Tipo de Carga
 API_Controller.getOneTipoCarga = (req, res) => {
 
     let tipo_carga = req.params.cod_tipo_carga;
@@ -255,6 +312,7 @@ API_Controller.getOneTipoCarga = (req, res) => {
     })
 }
 
+//Get One Tipo de Producto
 API_Controller.getOneTipoProducto = (req, res) => {
 
     let tipo_producto = req.params.cod_tipo_producto;
@@ -268,6 +326,7 @@ API_Controller.getOneTipoProducto = (req, res) => {
     })
 }
 
+//Get One Tipo de Estado
 API_Controller.getOneTipoEstado = (req, res) => {
 
     let estado = req.params.cod_estado;
@@ -281,6 +340,7 @@ API_Controller.getOneTipoEstado = (req, res) => {
     })
 }
 
+//Get One Carga de un Usuario
 API_Controller.getOneCargaUser = (req, res) => {
 
     let cod_carga = req.params.cod_carga;
@@ -295,16 +355,16 @@ API_Controller.getOneCargaUser = (req, res) => {
 
 //Eliminar Carga
 API_Controller.deleteCarga = (req, res, next) => {
-    let cod_carga = req.params.cod_carga
-    API_Model.deleteCarga(cod_carga, (err, rows) => {
+        let cod_carga = req.params.cod_carga
+        API_Model.deleteCarga(cod_carga, (err, rows) => {
 
-        if (err) {
-            console.log(err);
-        }
-    })
+            if (err) {
+                console.log(err);
+            }
+        })
 
-}
-
+    }
+    //Actualizar una Carga
 API_Controller.updateCarga = (req, res) => {
 
     let obj = Object.assign({}, req.body);

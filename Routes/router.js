@@ -30,15 +30,28 @@ router.get('/getOneTipoCarroceria/:cod_tipo_carroceria', API_Controller.getOneTi
 //Agregar Camión
 router.post('/add_truck', upload.none(), API_Controller.add_truck);
 
-//Eliminar Camión
-router.delete('/delete/:patente', API_Controller.deleteTruck);
-
 //Editar Camión
 router.get('/my_truck/:patente', API_Controller.getOneTruck);
 router.put('/update_truck', upload.none(), API_Controller.updateTruck);
 
+//Eliminar Camión
+router.delete('/delete_camion/:patente_camion', API_Controller.deleteTruck);
+
+//Agregar Carroceria
+router.post('/add_carroceria', upload.none(), API_Controller.add_carroceria);
+
+//Editar Carrocería
+router.get('/mi_carroceria/:patente_carroceria', API_Controller.getOneCarroceria);
+router.put('/update_carroceria', upload.none(), API_Controller.updateCarroceria);
+
+//Eliminar Carroceria
+router.delete('/delete_carroceria/:patente_carroceria', API_Controller.deleteCarroceria);
+
 //Todos los camiones de un usuario
 router.get('/getTrucksUser/:cod_usuario', API_Controller.getTrucksUser);
+
+//Todos las carrocerías de un usuario
+router.get('/getCarroceriasUser/:cod_usuario', API_Controller.getCarroceriasUser);
 
 /* --------------------------------------- DADORES DE CARGA --------------------------------------- */
 //Get para Tipo de Carga
@@ -56,11 +69,22 @@ router.post('/add_freight', upload.none(), API_Controller.add_freight);
 //Todos las cargas de un usuario
 router.get('/getCargasUser/:cod_usuario', API_Controller.getCargasUser);
 
+//Get One Tipo de Carga
 router.get('/getOneTipoCarga/:cod_tipo_carga', API_Controller.getOneTipoCarga);
+
+//Get One Tipo de Producto
 router.get('/getOneTipoProducto/:cod_tipo_producto', API_Controller.getOneTipoProducto);
+
+//Get One Tipo de Estado
 router.get('/getOneTipoEstado/:cod_estado', API_Controller.getOneTipoEstado);
+
+//Get One Carga de un Usuario
 router.get('/getOneCargaUser/:cod_carga', API_Controller.getOneCargaUser);
+
+//Eliminar una Carga
 router.delete('/delete_carga/:cod_carga', API_Controller.deleteCarga);
+
+//Actualizar una Carga
 router.put('/update_carga', upload.none(), API_Controller.updateCarga);
 
 module.exports = router;

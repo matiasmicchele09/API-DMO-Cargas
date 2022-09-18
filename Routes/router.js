@@ -87,4 +87,6 @@ router.delete('/delete_carga/:cod_carga', API_Controller.deleteCarga);
 //Actualizar una Carga
 router.put('/update_carga', upload.none(), API_Controller.updateCarga);
 
+//Buscar Cargas
+router.get('/searchCarga/:nombre_provincia', API_Controller.getAllCargas);
 module.exports = router;

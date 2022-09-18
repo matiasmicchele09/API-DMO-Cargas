@@ -355,22 +355,36 @@ API_Controller.getOneCargaUser = (req, res) => {
 
 //Eliminar Carga
 API_Controller.deleteCarga = (req, res, next) => {
-        let cod_carga = req.params.cod_carga
-        API_Model.deleteCarga(cod_carga, (err, rows) => {
+    let cod_carga = req.params.cod_carga
+    API_Model.deleteCarga(cod_carga, (err, rows) => {
 
-            if (err) {
-                console.log(err);
-            }
-        })
+        if (err) {
+            console.log(err);
+        }
+    })
 
-    }
-    //Actualizar una Carga
+}
+
+//Actualizar una Carga
 API_Controller.updateCarga = (req, res) => {
 
     let obj = Object.assign({}, req.body);
     console.log(obj);
     API_Model.updateCarga(obj, (err) => {
         console.log(err);
+    })
+}
+
+//Buscar Cargas
+API_Controller.getAllCargas = (req, res) => {
+
+    let nombre_provincia = req.params.nombre_provincia;
+    API_Model.getAllCargas(nombre_provincia, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
     })
 }
 

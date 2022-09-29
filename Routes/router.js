@@ -89,4 +89,17 @@ router.put('/update_carga', upload.none(), API_Controller.updateCarga);
 
 //Buscar Cargas
 router.get('/searchCarga/:nombre_provincia', API_Controller.getAllCargas);
+
+//Confirmar Solicitud de Carga
+router.post('/confirm_request', upload.none(), API_Controller.confirm_request);
+
+//Solicitudes
+router.get('/getUserRequest/:cod_usuario', API_Controller.getUserRequest);
+
+//Get One Tipo de Estado Solicitud
+router.get('/getTipoEstadoSolicitud/:cod_estado', API_Controller.getTipoEstadoSolicitud);
+
+//Get One Tipo Producto
+router.get('/getOneTipoProducto/:cod_tipo_producto', API_Controller.getOneTipoProducto);
+
 module.exports = router;

@@ -111,7 +111,13 @@ API_Controller.add_truck = (req, res) => {
     let obj = Object.assign({}, req.body);
     console.log(obj);
     API_Model.add_truck(obj, (err) => {
-        console.log(err);
+        if (err) {
+            console.log(err);
+        } else {
+            res.sendStatus(200);
+            //console.log(satus);
+        }
+
     })
 }
 
@@ -388,5 +394,55 @@ API_Controller.getAllCargas = (req, res) => {
     })
 }
 
+//Confirmar Solicitud de Carga
+API_Controller.confirm_request = (req, res) => {
 
+    /* Tuve que definir una variable (obj) objeto porque sino me tiraba un error, me lo creaba como un objeto vacio, no se porque. Esta en imagenes en Notion */
+    let obj = Object.assign({}, req.body);
+    console.log(obj);
+    API_Model.confirm_request(obj, (err) => {
+        console.log(err);
+    })
+}
+
+//Solicitudes
+API_Controller.getUserRequest = (req, res) => {
+
+    let cod_usuario = req.params.cod_usuario;
+    API_Model.getUserRequest(cod_usuario, (err, rows) => {
+        if (err) {
+            // console.log('Error:', err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Get One Tipo de Estado Solicitud
+API_Controller.getTipoEstadoSolicitud = (req, res) => {
+
+    let estado = req.params.cod_estado;
+    API_Model.getTipoEstadoSolicitud(estado, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Get One Tipo Producto
+API_Controller.getOneTipoProducto = (req, res) => {
+
+    let cod_tipo_producto = req.params.cod_tipo_producto;
+    API_Model.getOneTipoProducto(cod_tipo_producto, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
 module.exports = API_Controller;

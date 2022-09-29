@@ -17,7 +17,7 @@ API_Model.logIn = (data, cb) => {
 
 //Actualizar datos del usuario
 API_Model.update_profile = (data, cb) => {
-    conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, email = $3, password = $4, fec_nacim = $5 WHERE email = $3', [data.razon_social, data.cuit_cuil, data.email, data.password, data.fec_nacim], cb)
+    conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, email = $3, password = $4, fec_nacim = $5 WHERE cod_usuario = $6', [data.razon_social, data.cuit_cuil, data.email, data.password, data.fec_nacim, data.cod_usuario], cb)
 }
 
 //Obtener todos los datos de UN usuario
@@ -61,10 +61,9 @@ API_Model.deleteCarroceria = (id, cb) => conn.query('DELETE FROM carrocerias WHE
 
 //Todos los camiones de un usuario
 API_Model.getTrucksUser = (id, cb) => {
-    conn.query('SELECT * FROM camiones WHERE cod_usuario = $1', [id], cb)
-}
-
-//Todos las carrocerías de un usuario
+        conn.query('SELECT * FROM camiones WHERE cod_usuario = $1', [id], cb)
+    }
+    //Todos las carrocerías de un usuario
 API_Model.getCarroceriasUser = (id, cb) => {
     conn.query('SELECT * FROM carrocerias WHERE cod_usuario = $1', [id], cb)
 }
@@ -112,6 +111,23 @@ API_Model.updateCarga = (data, cb) => conn.query('UPDATE cargas SET cod_carga = 
 
 //Buscar Cargas
 API_Model.getAllCargas = (nombre_provincia, cb) => conn.query('SELECT * FROM cargas WHERE prov_origen = $1', [nombre_provincia], cb)
+
+//Confirmar Solicitud de Carga
+API_Model.confirm_request = (data, cb) => {
+    conn.query('INSERT INTO solicitudes (cod_estado_solicitud, cod_usuario_transp, cod_carga, fec_solicitud, patente_camion, patente_carroceria) VALUES ($1, $2, $3, $4, $5, $6)', [data.cod_estado_solicitud, data.cod_usuario_transp, data.cod_carga, data.fec_solicitud, data.patente_camion, data.patente_carroceria], cb)
+}
+
+//Solicitudes
+API_Model.getUserRequest = (id, cb) => {
+    conn.query('SELECT * FROM solicitudes WHERE cod_usuario_transp = $1', [id], cb)
+}
+
+//Get One Tipo de Estado Solicitud
+API_Model.getTipoEstadoSolicitud = (id, cb) => conn.query('SELECT descripcion FROM estados_solicitud WHERE cod_estado_solicitud = $1', [id], cb)
+
+//Get One Tipo Producto
+API_Model.getOneTipoProducto = (id, cb) => conn.query('SELECT descripcion FROM tipos_productos WHERE cod_tipo_producto = $1', [id], cb)
+
 API_Model.close = () => conn.end()
 
 module.exports = API_Model;

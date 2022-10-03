@@ -18,6 +18,7 @@ router.post('/logIn', upload.none(), API_Controller.logIn);
 router.post('/update_profile', upload.none(), API_Controller.update_profile);
 router.get('/dashboard/:cod_usuario', API_Controller.getOne);
 router.get('/my_profile/:cod_usuario', API_Controller.getOne);
+
 /* --------------------------------------- TRANSPORTISTAS --------------------------------------- */
 //Get para Tipo Camiones
 router.get('/getAllTypeTruck', API_Controller.getAllTypeTruck);
@@ -87,8 +88,11 @@ router.delete('/delete_carga/:cod_carga', API_Controller.deleteCarga);
 //Actualizar una Carga
 router.put('/update_carga', upload.none(), API_Controller.updateCarga);
 
+//GetAll cargas para poder ver que provincias tienen o no cargas
+router.get('/getAllCargas', API_Controller.getAllCargas);
+
 //Buscar Cargas
-router.get('/searchCarga/:nombre_provincia', API_Controller.getAllCargas);
+router.get('/searchCarga/:nombre_provincia', API_Controller.getAllCargasProvincia);
 
 //Confirmar Solicitud de Carga
 router.post('/confirm_request', upload.none(), API_Controller.confirm_request);
@@ -101,5 +105,14 @@ router.get('/getTipoEstadoSolicitud/:cod_estado', API_Controller.getTipoEstadoSo
 
 //Get One Tipo Producto
 router.get('/getOneTipoProducto/:cod_tipo_producto', API_Controller.getOneTipoProducto);
+
+//Get para poner el dador de carga en la card
+router.get('/getNameUser/:cod_usuario', API_Controller.getNameUser);
+
+//Actualizar estado de una Carga
+router.put('/updateEstadoCarga', API_Controller.updateEstadoCarga);
+
+//Get One Solicitud
+router.get('/getOneSolicitud/:cod_solitud', API_Controller.getOneSolicitud);
 
 module.exports = router;

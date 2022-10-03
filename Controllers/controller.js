@@ -336,6 +336,7 @@ API_Controller.getOneTipoProducto = (req, res) => {
 API_Controller.getOneTipoEstado = (req, res) => {
 
     let estado = req.params.cod_estado;
+    console.log("estado", estado);
     API_Model.getOneTipoEstado(estado, (err, rows) => {
         if (err) {
             console.log(err);
@@ -381,11 +382,23 @@ API_Controller.updateCarga = (req, res) => {
     })
 }
 
-//Buscar Cargas
+//GetAll cargas para poder ver que provincias tienen o no cargas
 API_Controller.getAllCargas = (req, res) => {
 
+    API_Model.getAllCargas((err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Buscar Cargas
+API_Controller.getAllCargasProvincia = (req, res) => {
+
     let nombre_provincia = req.params.nombre_provincia;
-    API_Model.getAllCargas(nombre_provincia, (err, rows) => {
+    API_Model.getAllCargasProvincia(nombre_provincia, (err, rows) => {
         if (err) {
             console.log(err);
         } else {
@@ -445,4 +458,40 @@ API_Controller.getOneTipoProducto = (req, res) => {
         }
     })
 }
+
+//Get para poner el dador de carga en la card
+API_Controller.getNameUser = (req, res) => {
+
+    let cod_usuario = req.params.cod_usuario;
+    API_Model.getNameUser(cod_usuario, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Actualizar Estado de una Carga
+API_Controller.updateEstadoCarga = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log(obj);
+    API_Model.updateEstadoCarga(obj, (err) => {
+        console.log(err);
+    })
+}
+
+//Get One Solicitud
+API_Controller.getOneSolicitud = (req, res) => {
+
+    let cod_solitud = req.params.cod_solitud;
+    API_Model.getOneSolicitud(cod_solitud, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
 module.exports = API_Controller;

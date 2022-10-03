@@ -98,7 +98,7 @@ API_Model.getOneTipoCarga = (id, cb) => conn.query('SELECT descripcion FROM tipo
 API_Model.getOneTipoProducto = (id, cb) => conn.query('SELECT descripcion FROM tipos_productos WHERE cod_tipo_producto = $1', [id], cb)
 
 //Get One Tipo de Estado
-API_Model.getOneTipoEstado = (id, cb) => conn.query('SELECT descripcion FROM estados_carga WHERE cod_estado_carga = $1', [id], cb)
+API_Model.getOneTipoEstado = (id, cb) => conn.query('SELECT * FROM estados_carga WHERE cod_estado_carga = $1', [id], cb)
 
 //Get One Carga de un Usuario
 API_Model.getOneCargaUser = (id, cb) => conn.query('SELECT * FROM cargas WHERE cod_carga = $1', [id], cb)
@@ -109,8 +109,11 @@ API_Model.deleteCarga = (id, cb) => conn.query('DELETE FROM cargas WHERE cod_car
 //Actualizar una Carga
 API_Model.updateCarga = (data, cb) => conn.query('UPDATE cargas SET cod_carga = $1, req_refrigeracion = $2, es_carga_peligrosa = $3, es_carga_apilable = $4, cod_tipo_producto = $5, cant_unit = $6, peso_unit_kg = $7, peso_total_kg = $8, largo_mts = $9, ancho_mts = $10, alto_mts = $11, peso_unit_tn = $12, peso_total_tn = $13, cant_litros = $14, ciudad_origen = $15, ciudad_destino = $16, fec_retiro = $17, hora_retiro = $18, fec_destino = $19, hora_destino = $20, comentario = $21, domicilio_origen = $22, domicilio_destino = $23, prov_origen = $24, prov_destino = $25, receptor_carga = $26 WHERE cod_carga = $1', [data.cod_carga, data.req_refrigeracion, data.es_carga_peligrosa, data.es_carga_apilable, data.cod_tipo_producto, data.cant_unit, data.peso_unit_kg, data.peso_total_kg, data.largo_mts, data.ancho_mts, data.alto_mts, data.peso_unit_tn, data.peso_total_tn, data.cant_litros, data.ciudad_origen, data.ciudad_destino, data.fec_retiro, data.hora_retiro, data.fec_destino, data.hora_destino, data.comentario, data.domicilio_origen, data.domicilio_destino, data.prov_origen, data.prov_destino, data.receptor_carga], cb)
 
+//GetAll cargas para poder ver que provincias tienen o no cargas
+API_Model.getAllCargas = (cb) => conn.query('SELECT * FROM cargas', cb)
+
 //Buscar Cargas
-API_Model.getAllCargas = (nombre_provincia, cb) => conn.query('SELECT * FROM cargas WHERE prov_origen = $1', [nombre_provincia], cb)
+API_Model.getAllCargasProvincia = (nombre_provincia, cb) => conn.query('SELECT * FROM cargas WHERE prov_origen = $1', [nombre_provincia], cb)
 
 //Confirmar Solicitud de Carga
 API_Model.confirm_request = (data, cb) => {
@@ -123,10 +126,19 @@ API_Model.getUserRequest = (id, cb) => {
 }
 
 //Get One Tipo de Estado Solicitud
-API_Model.getTipoEstadoSolicitud = (id, cb) => conn.query('SELECT descripcion FROM estados_solicitud WHERE cod_estado_solicitud = $1', [id], cb)
+API_Model.getTipoEstadoSolicitud = (id, cb) => conn.query('SELECT * FROM estados_solicitud WHERE cod_estado_solicitud = $1', [id], cb)
 
 //Get One Tipo Producto
 API_Model.getOneTipoProducto = (id, cb) => conn.query('SELECT descripcion FROM tipos_productos WHERE cod_tipo_producto = $1', [id], cb)
+
+//Get para poner el dador de carga en la card
+API_Model.getNameUser = (id, cb) => conn.query('SELECT razon_social FROM usuarios WHERE cod_usuario = $1', [id], cb)
+
+//Actualizar estado de una Carga
+API_Model.updateEstadoCarga = (data, cb) => conn.query('UPDATE cargas SET cod_estado_carga = $2 WHERE cod_carga = $1', [data.codigo_carga, data.cod_estado_carga], cb)
+
+//Get One Solicitud
+API_Model.getOneSolicitud = (id, cb) => conn.query('SELECT * FROM solicitudes WHERE cod_solicitud = $1', [id], cb);
 
 API_Model.close = () => conn.end()
 

@@ -7,15 +7,17 @@ const API_Controller = require('../Controllers/controller'),
     router = express.Router();
 
 //upload.none() para cuando se envian FormData
+/* POR ALGUNA EXTRAÑA RAZON QUE TENGO QUE AVERIGUAR... AL INSTALAR LA LIBRERÍA DE UPLOAD COMO QUE ME ROMPIÓ LA DEL MULTER, PARA SUBIR
+LOS FORMDATA, como que ahora no necesitan a multer */
 
 //Registración
-router.post('/register', upload.none(), API_Controller.register);
+router.post('/register' /* , upload.none() */ , API_Controller.register);
 
 //Log In
-router.post('/logIn', upload.none(), API_Controller.logIn);
+router.post('/logIn', API_Controller.logIn);
 
 //Perfil
-router.post('/update_profile', upload.none(), API_Controller.update_profile);
+router.post('/update_profile' /* , upload.none() */ , API_Controller.update_profile);
 router.get('/dashboard/:cod_usuario', API_Controller.getOne);
 router.get('/my_profile/:cod_usuario', API_Controller.getOne);
 
@@ -29,21 +31,21 @@ router.get('/getCarroceria', API_Controller.getCarroceria);
 router.get('/getOneTipoCarroceria/:cod_tipo_carroceria', API_Controller.getOneTipoCarroceria);
 
 //Agregar Camión
-router.post('/add_truck', upload.none(), API_Controller.add_truck);
+router.post('/add_truck', API_Controller.add_truck);
 
 //Editar Camión
 router.get('/my_truck/:patente', API_Controller.getOneTruck);
-router.put('/update_truck', upload.none(), API_Controller.updateTruck);
+router.put('/update_truck', /*  upload.none(), */ API_Controller.updateTruck);
 
 //Eliminar Camión
 router.delete('/delete_camion/:patente_camion', API_Controller.deleteTruck);
 
 //Agregar Carroceria
-router.post('/add_carroceria', upload.none(), API_Controller.add_carroceria);
+router.post('/add_carroceria', /* upload.none(), */ API_Controller.add_carroceria);
 
 //Editar Carrocería
 router.get('/mi_carroceria/:patente_carroceria', API_Controller.getOneCarroceria);
-router.put('/update_carroceria', upload.none(), API_Controller.updateCarroceria);
+router.put('/update_carroceria', /* upload.none(), */ API_Controller.updateCarroceria);
 
 //Eliminar Carroceria
 router.delete('/delete_carroceria/:patente_carroceria', API_Controller.deleteCarroceria);
@@ -65,7 +67,7 @@ router.get('/getAllTiposProducto/:tipo_carga', API_Controller.getAllTiposProduct
 router.get('/getOneEstadoCarga/:cod_estado', API_Controller.getOneEstadoCarga);
 
 //Agregar Carga
-router.post('/add_freight', upload.none(), API_Controller.add_freight);
+router.post('/add_freight', /* upload.none(), */ API_Controller.add_freight);
 
 //Todos las cargas de un usuario
 router.get('/getCargasUser/:cod_usuario', API_Controller.getCargasUser);
@@ -86,7 +88,7 @@ router.get('/getOneCargaUser/:cod_carga', API_Controller.getOneCargaUser);
 router.delete('/delete_carga/:cod_carga', API_Controller.deleteCarga);
 
 //Actualizar una Carga
-router.put('/update_carga', upload.none(), API_Controller.updateCarga);
+router.put('/update_carga', /*  upload.none(), */ API_Controller.updateCarga);
 
 //GetAll cargas para poder ver que provincias tienen o no cargas
 router.get('/getAllCargas', API_Controller.getAllCargas);
@@ -95,7 +97,7 @@ router.get('/getAllCargas', API_Controller.getAllCargas);
 router.get('/searchCarga/:nombre_provincia', API_Controller.getAllCargasProvincia);
 
 //Confirmar Solicitud de Carga
-router.post('/confirm_request', upload.none(), API_Controller.confirm_request);
+router.post('/confirm_request' /* , upload.none() */ , API_Controller.confirm_request);
 
 //Solicitudes
 router.get('/getUserRequest/:cod_usuario', API_Controller.getUserRequest);
@@ -113,6 +115,20 @@ router.get('/getNameUser/:cod_usuario', API_Controller.getNameUser);
 router.put('/updateEstadoCarga', API_Controller.updateEstadoCarga);
 
 //Get One Solicitud
-router.get('/getOneSolicitud/:cod_solitud', API_Controller.getOneSolicitud);
+router.get('/getOneSolicitud/:cod_solicitud', API_Controller.getOneSolicitud);
 
+//Cargas Solicitadas - Para Dador de Carga
+router.get('/getFreightsRequest/:cod_carga', API_Controller.getFreightsRequest);
+
+//Actualizar estado de una Solicitud
+router.put('/updateEstadoSolicitud', API_Controller.updateEstadoSolicitud);
+
+//Subida de archivos
+router.post('/uploadFiles/:cod_solicitud', API_Controller.uploadFiles);
+
+//Get nombre archivo
+router.get('/getNameFile/:cod_solicitud', API_Controller.getNameFile);
+
+//Descarga de arhivos
+//router.get('/downloadFile/:nombre_archivo', API_Controller.downloadFile);
 module.exports = router;

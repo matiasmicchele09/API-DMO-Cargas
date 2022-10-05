@@ -336,7 +336,6 @@ API_Controller.getOneTipoProducto = (req, res) => {
 API_Controller.getOneTipoEstado = (req, res) => {
 
     let estado = req.params.cod_estado;
-    console.log("estado", estado);
     API_Model.getOneTipoEstado(estado, (err, rows) => {
         if (err) {
             console.log(err);
@@ -475,7 +474,7 @@ API_Controller.getNameUser = (req, res) => {
 //Actualizar Estado de una Carga
 API_Controller.updateEstadoCarga = (req, res) => {
     let obj = Object.assign({}, req.body);
-    console.log(obj);
+    //console.log(obj);
     API_Model.updateEstadoCarga(obj, (err) => {
         console.log(err);
     })
@@ -484,8 +483,8 @@ API_Controller.updateEstadoCarga = (req, res) => {
 //Get One Solicitud
 API_Controller.getOneSolicitud = (req, res) => {
 
-    let cod_solitud = req.params.cod_solitud;
-    API_Model.getOneSolicitud(cod_solitud, (err, rows) => {
+    let cod_solicitud = req.params.cod_solicitud;
+    API_Model.getOneSolicitud(cod_solicitud, (err, rows) => {
         if (err) {
             console.log(err);
         } else {
@@ -493,5 +492,93 @@ API_Controller.getOneSolicitud = (req, res) => {
         }
     })
 }
+
+//Cargas Solicitadas - Para Dador de Carga
+API_Controller.getFreightsRequest = (req, res) => {
+    let cod_carga = req.params.cod_carga;
+    API_Model.getFreightsRequest(cod_carga, (err, rows) => {
+        if (err) {
+            // console.log('Error:', err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Actualizar estado de una Solicitud
+API_Controller.updateEstadoSolicitud = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    //console.log(obj);
+    API_Model.updateEstadoSolicitud(obj, (err) => {
+        console.log(err);
+    })
+}
+
+//Subida de archivos
+API_Controller.uploadFiles = (req, res) => {
+
+    let filePDF = req.files.file,
+        objFile = {
+            cod_solicitud: req.params.cod_solicitud,
+            file_name: req.files.file.name
+        };
+
+    /* filePDF.mv(`http://localhost:3000/assets/files/${req.files.file.name}`, err => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+    }) */
+
+    /* Si lo subo al 3000 me deja, pero no puedo descargarlo desde el front, debería poder
+    llamarse a la función downloadFile, pero no me está funcionando.
+    Si lo intento subir al 5000 tampoco me deja, me tira un error de encabezados.
+    Así que lo que me quedó por hacer es poner la ruta normal así como puse abajo... 
+    para estos fines lo dejo así, cualquier cosa veo como arreglarlo */
+    filePDF.mv(`C:/Users/usuario/Desktop/DMO-Cargas-2022/Front/assets/files/${req.files.file.name}`, err => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+    })
+
+    console.log("objFile", objFile);
+
+    API_Model.uploadFiles(objFile, (err, rows) => {
+        if (err) {
+            // console.log('Error:', err);
+        } else {
+            //console.log(rows.rows);
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+};
+
+//Get nombre archivo
+API_Controller.getNameFile = (req, res) => {
+
+    let cod_solicitud = req.params.cod_solicitud;
+    API_Model.getNameFile(cod_solicitud, (err, rows) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
+//Descarga de arhivos
+/* API_Controller.downloadFile = (req, res) => {
+
+    let nombre_archivo = req.params.nombre_archivo;
+    console.log(__dirname);
+    res.download(`http://localhost:3000/api/files/${nombre_archivo}`, nombre_archivo, function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Archivo Descargado");
+        }
+    })
+}
+ */
 
 module.exports = API_Controller;

@@ -132,13 +132,29 @@ API_Model.getTipoEstadoSolicitud = (id, cb) => conn.query('SELECT * FROM estados
 API_Model.getOneTipoProducto = (id, cb) => conn.query('SELECT descripcion FROM tipos_productos WHERE cod_tipo_producto = $1', [id], cb)
 
 //Get para poner el dador de carga en la card
-API_Model.getNameUser = (id, cb) => conn.query('SELECT razon_social FROM usuarios WHERE cod_usuario = $1', [id], cb)
+API_Model.getNameUser = (id, cb) => conn.query('SELECT razon_social, cuit_cuil FROM usuarios WHERE cod_usuario = $1', [id], cb)
 
 //Actualizar estado de una Carga
 API_Model.updateEstadoCarga = (data, cb) => conn.query('UPDATE cargas SET cod_estado_carga = $2 WHERE cod_carga = $1', [data.codigo_carga, data.cod_estado_carga], cb)
 
 //Get One Solicitud
 API_Model.getOneSolicitud = (id, cb) => conn.query('SELECT * FROM solicitudes WHERE cod_solicitud = $1', [id], cb);
+
+//Cargas Solicitadas - Para Dador de Carg
+API_Model.getFreightsRequest = (id, cb) => {
+    conn.query('SELECT * FROM solicitudes WHERE cod_carga = $1', [id], cb)
+}
+
+//Actualizar estado de una Solicitud
+API_Model.updateEstadoSolicitud = (data, cb) => conn.query('UPDATE solicitudes SET cod_estado_solicitud = $2, fec_cambio_estado = $3 WHERE cod_carga = $1', [data.codigo_carga, data.cod_estado_solicitud, data.fec_cambio_estado], cb)
+
+//Subida de archivos
+API_Model.uploadFiles = (data, cb) => {
+    conn.query('INSERT INTO solicitudes_archivos (cod_solicitud, nombre_archivo) VALUES ($1, $2)', [data.cod_solicitud, data.file_name], cb)
+}
+
+//Get nombre archivo
+API_Model.getNameFile = (id, cb) => conn.query('SELECT nombre_archivo FROM solicitudes_archivos WHERE cod_solicitud = $1', [id], cb);
 
 API_Model.close = () => conn.end()
 

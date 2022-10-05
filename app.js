@@ -3,6 +3,7 @@
 const express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
+    fileUpload = require('express-fileupload'),
     routes = require('./Routes/router'),
     port = (process.env.PORT || 3000),
     app = express();
@@ -14,6 +15,7 @@ app.set('port', port)
 app.use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: false }))
     .use(cors())
+    .use(fileUpload())
     .use(express.json());
 
 //Rutas, es como que yo importo el módulo de rutas

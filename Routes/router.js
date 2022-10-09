@@ -18,6 +18,7 @@ router.post('/logIn', API_Controller.logIn);
 
 //Perfil
 router.post('/update_profile' /* , upload.none() */ , API_Controller.update_profile);
+router.post('/update_cuenta' /* , upload.none() */ , API_Controller.update_cuenta);
 router.get('/dashboard/:cod_usuario', API_Controller.getOne);
 router.get('/my_profile/:cod_usuario', API_Controller.getOne);
 
@@ -126,9 +127,14 @@ router.put('/updateEstadoSolicitud', API_Controller.updateEstadoSolicitud);
 //Subida de archivos
 router.post('/uploadFiles/:cod_solicitud', API_Controller.uploadFiles);
 
+//Subida de archivos (img)
+router.post('/uploadImages', API_Controller.uploadImages);
+
 //Get nombre archivo
 router.get('/getNameFile/:cod_solicitud', API_Controller.getNameFile);
 
 //Descarga de arhivos
 //router.get('/downloadFile/:nombre_archivo', API_Controller.downloadFile);
+
+router.get('/downloadImg/:nombre_archivo', API_Controller.downloadImg);
 module.exports = router;

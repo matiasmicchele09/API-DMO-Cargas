@@ -15,7 +15,10 @@ app.set('port', port)
 app.use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: false }))
     .use(cors())
-    .use(fileUpload())
+    .use(fileUpload({
+        limits: { fileSize: 50 * 1024 * 1024 },
+        createParentPath: true,
+    }))
     .use(express.json());
 
 //Rutas, es como que yo importo el módulo de rutas

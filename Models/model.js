@@ -17,8 +17,13 @@ API_Model.logIn = (data, cb) => {
 
 //Actualizar datos del usuario
 API_Model.update_profile = (data, cb) => {
-    conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, email = $3, password = $4, fec_nacim = $5 WHERE cod_usuario = $6', [data.razon_social, data.cuit_cuil, data.email, data.password, data.fec_nacim, data.cod_usuario], cb)
+    conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, fec_nacim = $3, nom_img_lic_frente = $4, nom_img_lic_dorso = $5, nom_img_curso = $6 WHERE cod_usuario = $7', [data.razon_social, data.cuit_cuil, data.fec_nacim, data.nom_img_lic_frente, data.nom_img_lic_dorso, data.nom_img_curso, data.cod_usuario], cb)
 }
+
+API_Model.update_cuenta = (data, cb) => {
+    conn.query('UPDATE usuarios SET email = $1, password = $2 WHERE cod_usuario = $3', [data.email, data.password, data.cod_usuario], cb)
+}
+
 
 //Obtener todos los datos de UN usuario
 API_Model.getOne = (id, cb) => conn.query('SELECT * FROM usuarios WHERE cod_usuario = $1', [id], cb)

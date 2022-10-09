@@ -36,7 +36,17 @@ API_Controller.logIn = (req, res) => {
 API_Controller.update_profile = (req, res) => {
 
     let obj = Object.assign({}, req.body);
+    console.log(obj);
     API_Model.update_profile(obj, (err) => {
+        console.log(err);
+    })
+}
+
+//Cuenta
+API_Controller.update_cuenta = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log(obj);
+    API_Model.update_cuenta(obj, (err) => {
         console.log(err);
     })
 }
@@ -541,7 +551,7 @@ API_Controller.uploadFiles = (req, res) => {
         }
     })
 
-    console.log("objFile", objFile);
+    //console.log("objFile", objFile);
 
     API_Model.uploadFiles(objFile, (err, rows) => {
         if (err) {
@@ -571,7 +581,7 @@ API_Controller.getNameFile = (req, res) => {
 
     let nombre_archivo = req.params.nombre_archivo;
     console.log(__dirname);
-    res.download(`http://localhost:3000/api/files/${nombre_archivo}`, nombre_archivo, function(err) {
+    res.download(`http://localhost:3000/files/${nombre_archivo}`, nombre_archivo, function(err) {
         if (err) {
             console.log(err);
         } else {
@@ -580,5 +590,48 @@ API_Controller.getNameFile = (req, res) => {
     })
 }
  */
+API_Controller.uploadImages = (req, res) => {
+    let fileImg = req.files.file;
+    console.log(fileImg);
+
+    if (fileImg.truncated) {
+        return res.status(400).json({
+            ok: false,
+            msg: "El archivo es demasiado grande. Se permite hasta 50MB"
+        })
+    }
+    fileImg.mv(`files_users/${req.files.file.name}`, err => {
+        /* fileImg.mv(`C:/files_users/${req.files.file.name}`, err => { */
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                msg: "No se pudo cargar el archivo"
+            })
+        }
+        res.json({
+            ok: true,
+            msg: `${req.files.file.name} subido con éxito`
+        })
+    })
+}
+
+//const path = require('path');
+const fs = require('fs');
+API_Controller.downloadImg = async(req, res) => {
+    const nombre_archivo = req.params.nombre_archivo.trim();
+    console.log(nombre_archivo);
+    const pathArchivo = `C:/Users/usuario/Desktop/DMO-Cargas-2022/API/files_users/${nombre_archivo}`;
+    console.log("pathArchivo", pathArchivo);
+
+    if (!fs.existsSync(pathArchivo)) {
+        return res.status(400).json({
+            ok: false,
+            msg: "No se encontó el archivo"
+        })
+    }
+
+    res.sendFile(pathArchivo);
+}
 
 module.exports = API_Controller;

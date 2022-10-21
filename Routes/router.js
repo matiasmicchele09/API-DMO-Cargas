@@ -4,7 +4,12 @@ const API_Controller = require('../Controllers/controller'),
     multer = require('multer'),
     upload = multer(),
     express = require('express'),
+    mercadopago = require("mercadopago"),
     router = express.Router();
+
+mercadopago.configure({
+    access_token: "TEST-2384579572312936-102011-f2d63a0ca1cf795b63705995b23716fc-306506163"
+});
 
 //upload.none() para cuando se envian FormData
 /* POR ALGUNA EXTRAÑA RAZON QUE TENGO QUE AVERIGUAR... AL INSTALAR LA LIBRERÍA DE UPLOAD COMO QUE ME ROMPIÓ LA DEL MULTER, PARA SUBIR
@@ -138,4 +143,75 @@ router.get('/getNameFile/:cod_solicitud', API_Controller.getNameFile);
 
 //Descargar Imagen
 router.get('/downloadImg/:nombre_archivo', API_Controller.downloadImg);
+
+//Pago con MercadoPago
+router.post('/payWithMP', async(req, res) => {
+    const obj = Object.assign({}, req.body);
+    console.log(obj);
+    let preference = {
+        items: [{
+                title: obj.descripcion,
+                unit_price: obj.valor_carga,
+                quantity: obj.cantidad,
+            }]
+            /* ,
+            back_urls: {
+                "success": "http://localhost:5000/feedback",
+                "failure": "http://localhost:5000/feedback",
+                "pending": "http://localhost:5000/feedback"
+            },
+            auto_return: "approved", */
+    }
+    const response = await mercadopago.preferences.create(preference);
+    const preferenceId = response.body.id;
+    console.log(response.body);
+    res.send({ preferenceId })
+});
+
+
+
+
+router.post("/create_preference", (req, res) => {
+    const obj = Object.assign({}, req.body);
+    console.log(obj);
+
+    let preference = {
+        items: [{
+            descripcion: obj.descripcion,
+            valor_carga: obj.valor_carga,
+            cantidad: obj.cantidad,
+        }]
+
+        /* let preference = {
+            items: [{
+                title: req.body.descripcion,
+                unit_price: Number(req.body.valor_carga),
+                quantity: Number(req.body.cantidad),
+            }] */
+
+        /*, back_urls: {
+            "success": "http://localhost:5000/feedback",
+            "failure": "http://localhost:5000/feedback",
+            "pending": "http://localhost:5000/feedback"
+        },
+        auto_return: "approved", */
+    };
+
+    mercadopago.preferences.create(preference)
+        .then(function(response) {
+            res.json({
+                id: response.body.id
+            });
+        }).catch(function(error) {
+            console.log(error);
+        });
+});
+/* router.get('/feedback', function(req, res) {
+    res.json({
+        Payment: req.query.payment_id,
+        Status: req.query.status,
+        MerchantOrder: req.query.merchant_order_id
+    });
+}); */
+
 module.exports = router;

@@ -681,4 +681,28 @@ API_Controller.downloadImg = async(req, res) => {
     res.sendFile(pathArchivo);
 }
 
+//Pago con MercadoPago
+API_Controller.payWithMP = async(req, res) => {
+    const obj = Object.assign({}, req.body);
+    console.log(obj);
+    let preference = {
+        items: [{
+                title: obj.descripcion,
+                unit_price: obj.valor_carga,
+                quantity: obj.cantidad,
+            }]
+            /* ,
+            back_urls: {
+                "success": "http://localhost:5000/feedback",
+                "failure": "http://localhost:5000/feedback",
+                "pending": "http://localhost:5000/feedback"
+            },
+            auto_return: "approved", */
+    }
+    const response = await mercadopago.preferences.create(preference);
+    const preferenceId = response.body.id;
+    res.send({ preferenceId })
+}
+
+
 module.exports = API_Controller;

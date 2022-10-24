@@ -1,6 +1,7 @@
 'use strict'
 
 const API_Controller = require('../Controllers/controller'),
+    API_Model = require('../Models/model'),
     multer = require('multer'),
     upload = multer(),
     express = require('express'),
@@ -129,8 +130,12 @@ router.get('/getFreightsRequest/:cod_carga', API_Controller.getFreightsRequest);
 //Actualizar estado de una Solicitud
 router.put('/updateEstadoSolicitud', API_Controller.updateEstadoSolicitud);
 
+router.put('/uploadFileRequest', API_Controller.uploadFileRequest);
+router.put('/uploadFileFinViaje', API_Controller.uploadFileFinViaje);
+
 //Subida de archivos
-router.post('/uploadFiles/:cod_solicitud', API_Controller.uploadFiles);
+//router.post('/uploadFiles/:cod_solicitud', API_Controller.uploadFiles);
+router.post('/uploadFiles', API_Controller.uploadFiles);
 
 //Subida de archivos (img)
 router.post('/uploadImages', API_Controller.uploadImages);
@@ -139,7 +144,7 @@ router.post('/uploadImages', API_Controller.uploadImages);
 router.get('/getNameFile/:cod_solicitud', API_Controller.getNameFile);
 
 //Descarga de arhivos
-//router.get('/downloadFile/:nombre_archivo', API_Controller.downloadFile);
+router.get('/downloadFile/:nombre_archivo', API_Controller.downloadFile);
 
 //Descargar Imagen
 router.get('/downloadImg/:nombre_archivo', API_Controller.downloadImg);
@@ -148,26 +153,59 @@ router.get('/downloadImg/:nombre_archivo', API_Controller.downloadImg);
 router.post('/payWithMP', async(req, res) => {
     const obj = Object.assign({}, req.body);
     console.log(obj);
+    let solicitud = obj.descripcion.split("-")[0].trim()
+    console.log(solicitud)
     let preference = {
         items: [{
-                title: obj.descripcion,
-                unit_price: obj.valor_carga,
-                quantity: obj.cantidad,
-            }]
-            /* ,
-            back_urls: {
-                "success": "http://localhost:5000/feedback",
-                "failure": "http://localhost:5000/feedback",
-                "pending": "http://localhost:5000/feedback"
-            },
-            auto_return: "approved", */
+            title: obj.descripcion,
+            unit_price: obj.valor_carga,
+            quantity: obj.cantidad,
+        }],
+        back_urls: {
+            "success": `http://localhost:3000/feedback/${solicitud}`,
+            "failure": `http://localhost:3000/feedback/${solicitud}`,
+            "pending": `http://localhost:3000/feedback/${solicitud}`
+        },
+        auto_return: "approved",
     }
     const response = await mercadopago.preferences.create(preference);
     const preferenceId = response.body.id;
-    console.log(response.body);
     res.send({ preferenceId })
 });
 
+router.get('/feedback/:solicitud', function(req, res) {
+    let solicitud = req.params.solicitud;
+    console.log(solicitud);
+    console.log("Query", req.query);
+    let obj = {
+        Request: solicitud,
+        Payment: req.query.payment_id,
+        Status: req.query.status,
+        MerchantOrder: req.query.merchant_order_id
+    }
+
+    //return res.json(obj);       
+
+    /* res.json({
+        Payment: req.query.payment_id,
+        Status: req.query.status,
+        MerchantOrder: req.query.merchant_order_id
+    }); */
+
+    API_Model.add_pay(obj, (err) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                msg: `Bad Request: No se pudo agregar el Pago. ${err}`
+            })
+        } else {
+            res.sendStatus(200);
+            //return res.json(obj);       
+        }
+    })
+
+
+});
 
 
 
@@ -206,12 +244,9 @@ router.post("/create_preference", (req, res) => {
             console.log(error);
         });
 });
-/* router.get('/feedback', function(req, res) {
-    res.json({
-        Payment: req.query.payment_id,
-        Status: req.query.status,
-        MerchantOrder: req.query.merchant_order_id
-    });
-}); */
+
+
+//Consultar Estado del Pago
+router.get('/getPay/:cod_solicitud', API_Controller.getPay);
 
 module.exports = router;

@@ -327,7 +327,7 @@ API_Controller.add_freight = (req, res) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: `Bad Request: No se agregar la Carga. ${err}`
+                msg: `Bad Request: No se pudo agregar la Carga. ${err}`
             })
         } else {
             res.sendStatus(200);
@@ -536,6 +536,29 @@ API_Controller.updateEstadoCarga = (req, res) => {
     })
 }
 
+API_Controller.uploadFileRequest = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log("Update Nombre Archivo Solicitud Retiro de Carga: ", obj);
+    API_Model.uploadFileRequest(obj, (err) => {
+        return res.status(400).json({
+            ok: false,
+            msg: `Bad Request: No se actualizar el Nombre Archivo Solicitud Retiro de Carga. ${err}`
+        })
+    })
+}
+
+API_Controller.uploadFileFinViaje = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log("Update Nombre Archivo Solicitud Fin Viaje: ", obj);
+    API_Model.uploadFileFinViaje(obj, (err) => {
+        return res.status(400).json({
+            ok: false,
+            msg: `Bad Request: No se actualizar el Nombre Archivo Solicitud Fin Viaje. ${err}`
+        })
+    })
+}
+
+
 //Get One Solicitud
 API_Controller.getOneSolicitud = (req, res) => {
     let cod_solicitud = req.params.cod_solicitud;
@@ -579,24 +602,22 @@ API_Controller.updateEstadoSolicitud = (req, res) => {
 }
 
 //Subida de archivos
-API_Controller.uploadFiles = (req, res) => {
+/* API_Controller.uploadFiles = (req, res) => {
     let filePDF = req.files.file,
         objFile = {
             cod_solicitud: req.params.cod_solicitud,
             file_name: req.files.file.name
-        };
-    /* Si lo subo al 3000 me deja, pero no puedo descargarlo desde el front, debería poder
-    llamarse a la función downloadFile, pero no me está funcionando.
-    Si lo intento subir al 5000 tampoco me deja, me tira un error de encabezados.
-    Así que lo que me quedó por hacer es poner la ruta normal así como puse abajo... 
-    para estos fines lo dejo así, cualquier cosa veo como arreglarlo */
-    filePDF.mv(`C:/Users/usuario/Desktop/DMO-Cargas-2022/Front/assets/files/${req.files.file.name}`, err => {
+        }; */
+/* Si lo subo al 3000 me deja, pero no puedo descargarlo desde el front, debería poder    llamarse a la función downloadFile, pero no me está funcionando.    Si lo intento subir al 5000 tampoco me deja, me tira un error de encabezados.
+Así que lo que me quedó por hacer es poner la ruta normal así como puse abajo... 
+para estos fines lo dejo así, cualquier cosa veo como arreglarlo */
+/* filePDF.mv(`C:/Users/usuario/Desktop/DMO-Cargas-2022/Front/assets/files/${req.files.file.name}`, err => {
         if (err) {
             return res.status(500).send(err);
-        }
+        }        
     })
 
-    API_Model.uploadFiles(objFile, (err, rows) => {
+   API_Model.uploadFiles(objFile, (err, rows) => {
         if (err) {
             return res.json({
                 ok: false,
@@ -606,7 +627,35 @@ API_Controller.uploadFiles = (req, res) => {
             res.end(JSON.stringify(rows.rows))
         }
     })
-};
+}; */
+
+API_Controller.uploadFiles = (req, res) => {
+    let filePDF = req.files.file;
+    console.log(filePDF);
+
+    filePDF.mv(`files_request/${req.files.file.name}`, err => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                msg: `No se pudo cargar el Formulario. ${err}`
+            })
+        }
+        res.json({
+            ok: true,
+            msg: `${req.files.file.name} subido con éxito`
+        })
+    })
+}
+
+
+
+
+
+
+
+
+
+
 
 //Get nombre archivo
 API_Controller.getNameFile = (req, res) => {
@@ -622,24 +671,20 @@ API_Controller.getNameFile = (req, res) => {
         }
     })
 }
-
+const fs = require('fs');
 //Descarga de arhivos
-/* API_Controller.downloadFile = (req, res) => {
-
-    let nombre_archivo = req.params.nombre_archivo;
-    console.log(__dirname);
-    res.sendFile(`C:/Users/usuario/Desktop/DMO-Cargas-2022/API/files_users/${nombre_archivo}`)
-        res.download(`C:/Users/usuario/Desktop/DMO-Cargas-2022/API/files_users/${nombre_archivo}`, nombre_archivo, function(err) {
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    msg: "No se pudo cargar el archivo"
-                })
-            } else {
-                res.sendFile(`C:/Users/usuario/Desktop/DMO-Cargas-2022/API/files_users/${nombre_archivo}`)
-            }
+API_Controller.downloadFile = (req, res) => {
+    const nombre_archivo = req.params.nombre_archivo.trim();
+    const pathArchivo = `C:/Users/usuario/Desktop/DMO-Cargas-2022/API/files_request/${nombre_archivo}`;
+    console.log("pathArchivo", pathArchivo);
+    if (!fs.existsSync(pathArchivo)) {
+        return res.status(400).json({
+            ok: false,
+            msg: "No se encontó el archivo"
         })
-} */
+    }
+    res.sendFile(pathArchivo);
+}
 
 API_Controller.uploadImages = (req, res) => {
     let fileImg = req.files.file;
@@ -665,7 +710,7 @@ API_Controller.uploadImages = (req, res) => {
     })
 }
 
-const fs = require('fs');
+
 API_Controller.downloadImg = async(req, res) => {
     const nombre_archivo = req.params.nombre_archivo.trim();
     const pathArchivo = `C:/Users/usuario/Desktop/DMO-Cargas-2022/API/files_users/${nombre_archivo}`;
@@ -681,28 +726,21 @@ API_Controller.downloadImg = async(req, res) => {
     res.sendFile(pathArchivo);
 }
 
-//Pago con MercadoPago
-API_Controller.payWithMP = async(req, res) => {
-    const obj = Object.assign({}, req.body);
-    console.log(obj);
-    let preference = {
-        items: [{
-                title: obj.descripcion,
-                unit_price: obj.valor_carga,
-                quantity: obj.cantidad,
-            }]
-            /* ,
-            back_urls: {
-                "success": "http://localhost:5000/feedback",
-                "failure": "http://localhost:5000/feedback",
-                "pending": "http://localhost:5000/feedback"
-            },
-            auto_return: "approved", */
-    }
-    const response = await mercadopago.preferences.create(preference);
-    const preferenceId = response.body.id;
-    res.send({ preferenceId })
+//Consultar Estado del Pago
+API_Controller.getPay = (req, res) => {
+    let cod_solicitud = req.params.cod_solicitud;
+    API_Model.getPay(cod_solicitud, (err, rows) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                msg: `Bad Request: No se pudo encontrar el Pago. ${err}`
+            })
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
 }
+
 
 
 module.exports = API_Controller;

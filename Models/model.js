@@ -117,13 +117,22 @@ API_Model.getOneSolicitud = (id, cb) => conn.query('SELECT * FROM solicitudes WH
 API_Model.getFreightsRequest = (id, cb) => conn.query('SELECT * FROM solicitudes WHERE cod_carga = $1', [id], cb);
 
 //Actualizar estado de una Solicitud
-API_Model.updateEstadoSolicitud = (data, cb) => conn.query('UPDATE solicitudes SET cod_estado_solicitud = $2, fec_cambio_estado = $3 WHERE cod_carga = $1', [data.codigo_carga, data.cod_estado_solicitud, data.fec_cambio_estado], cb)
+API_Model.updateEstadoSolicitud = (data, cb) => conn.query('UPDATE solicitudes SET cod_estado_solicitud = $2, fec_cambio_estado = $3 WHERE cod_solicitud = $1', [data.cod_solicitud, data.cod_estado_solicitud, data.fec_cambio_estado], cb)
+
+API_Model.uploadFileRequest = (data, cb) => conn.query('UPDATE solicitudes SET form_retiro = $2 WHERE cod_solicitud = $1', [data.cod_solicitud, data.nombre], cb)
+API_Model.uploadFileFinViaje = (data, cb) => conn.query('UPDATE solicitudes SET form_conformidad = $2 WHERE cod_solicitud = $1', [data.cod_solicitud, data.nombre], cb)
 
 //Subida de archivos
 API_Model.uploadFiles = (data, cb) => conn.query('INSERT INTO solicitudes_archivos (cod_solicitud, nombre_archivo) VALUES ($1, $2)', [data.cod_solicitud, data.file_name], cb);
 
 //Get nombre archivo
-API_Model.getNameFile = (id, cb) => conn.query('SELECT nombre_archivo FROM solicitudes_archivos WHERE cod_solicitud = $1', [id], cb);
+API_Model.getNameFile = (id, cb) => conn.query('SELECT form_retiro, form_conformidad FROM solicitudes WHERE cod_solicitud = $1', [id], cb);
+
+//Registrando Pagos
+API_Model.add_pay = (data, cb) => conn.query('INSERT INTO pagos_cargas (cod_solicitud, cod_operacion, estado, orden_comercial) VALUES ($1, $2, $3, $4)', [data.Request, data.Payment, data.Status, data.MerchantOrder], cb);
+
+//Consultando Estado del Pago
+API_Model.getPay = (id, cb) => conn.query('SELECT * FROM pagos_cargas WHERE cod_solicitud = $1', [id], cb)
 
 API_Model.close = () => conn.end()
 

@@ -7,12 +7,16 @@ const conn = require('./API_connection'),
 //console.log(data); //probar poner el objeto asi --> [data], en vez de ponerlo de a uno. NO FUNCIONó
 API_Model.register = (data, cb) => conn.query('INSERT INTO usuarios (razon_social, cuit_cuil, email, password, tipo_usuario) VALUES ($1, $2, $3, $4, $5)', [data.razon_social, data.cuit_cuil, data.email, data.password, data.tipo_usuario], cb)
 
+//Busco Email ya registrado
+API_Model.getOneEmail = (id, cb) => conn.query('SELECT email FROM usuarios WHERE email = $1', [id], cb)
+
 //Log In
 API_Model.logIn = (data, cb) => conn.query('SELECT cod_usuario, email, password FROM usuarios WHERE email = $1 AND password = $2', [data.email, data.password], cb)
 
 //Actualizar datos del usuario
-API_Model.update_profile = (data, cb) => conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, fec_nacim = $3, nom_img_lic_frente = $4, nom_img_lic_dorso = $5, nom_img_curso = $6 WHERE cod_usuario = $7', [data.razon_social, data.cuit_cuil, data.fec_nacim, data.nom_img_lic_frente, data.nom_img_lic_dorso, data.nom_img_curso, data.cod_usuario], cb)
+API_Model.update_profile = (data, cb) => conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, fec_nacim = $3, nom_img_lic_frente = $4, nom_img_lic_dorso = $5, nom_img_curso = $6, nro_telefono = $8 WHERE cod_usuario = $7', [data.razon_social, data.cuit_cuil, data.fec_nacim, data.nom_img_lic_frente, data.nom_img_lic_dorso, data.nom_img_curso, data.cod_usuario, data.nro_telefono], cb)
 API_Model.update_cuenta = (data, cb) => conn.query('UPDATE usuarios SET email = $1, password = $2 WHERE cod_usuario = $3', [data.email, data.password, data.cod_usuario], cb)
+API_Model.update_password = (data, cb) => conn.query('UPDATE usuarios SET password = $2 WHERE email = $1', [data.email, data.password], cb)
 
 //Obtener todos los datos de UN usuario
 API_Model.getOne = (id, cb) => conn.query('SELECT * FROM usuarios WHERE cod_usuario = $1', [id], cb)
@@ -54,14 +58,15 @@ API_Model.getCarroceriasUser = (id, cb) => conn.query('SELECT * FROM carrocerias
 
 //Get para Tipo de Carga
 API_Model.getAllTiposCarga = (cb) => conn.query('SELECT * FROM tipos_cargas', cb)
-    //Get para Tipo Producto
+
+//Get para Tipo Producto
 API_Model.getAllTiposProducto = (id, cb) => conn.query('SELECT * FROM tipos_productos WHERE cod_tipo_carga = $1', [id], cb)
-    //Get Estado Carga: Publicada
+
+//Get Estado Carga: Publicada
 API_Model.getOneEstadoCarga = (id, cb) => conn.query('SELECT * FROM estados_carga WHERE cod_estado_carga = $1', [id], cb)
 
 //Agregar Carga
-//API_Model.add_freight = (data, cb) => conn.query('INSERT INTO cargas (cod_usuario, cod_tipo_carga, req_refrigeracion, es_carga_peligrosa, es_carga_apilable, cod_tipo_producto, cant_unit, peso_unit_kg, peso_total_kg, largo_mts, ancho_mts, alto_mts, peso_unit_tn, peso_total_tn, cant_litros, cod_estado_carga, ciudad_origen, ciudad_destino, fec_retiro, hora_retiro, fec_destino, hora_destino, comentario, domicilio_origen, domicilio_destino, prov_origen, prov_destino, receptor_carga) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28)', [data.cod_usuario, data.cod_tipo_carga, data.req_refrigeracion, data.es_carga_peligrosa, data.es_carga_apilable, data.cod_tipo_producto, data.cant_unit, data.peso_unit_kg, data.peso_total_kg, data.largo_mts, data.ancho_mts, data.alto_mts, data.peso_unit_tn, data.peso_total_tn, data.cant_litros, data.cod_estado_carga, data.ciudad_origen, data.ciudad_destino, data.fec_retiro, data.hora_retiro, data.fec_destino, data.hora_destino, data.comentario, data.domicilio_origen, data.domicilio_destino, data.prov_origen, data.prov_destino, data.receptor_carga], cb)
-API_Model.add_freight = (data, cb) => conn.query('INSERT INTO cargas (cod_usuario, cod_tipo_carga, req_refrigeracion, es_carga_peligrosa, es_carga_apilable, cod_tipo_producto, cant_unit, peso_unit_kg, peso_total_kg, largo_mts, ancho_mts, alto_mts, peso_unit_tn, peso_total_tn, cant_litros, cod_estado_carga, origen, destino, fec_retiro, hora_retiro, fec_destino, hora_destino, comentario, domicilio_origen, domicilio_destino, receptor_carga, valor_carga, distancia_recorrido) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28)', [data.cod_usuario, data.cod_tipo_carga, data.req_refrigeracion, data.es_carga_peligrosa, data.es_carga_apilable, data.cod_tipo_producto, data.cant_unit, data.peso_unit_kg, data.peso_total_kg, data.largo_mts, data.ancho_mts, data.alto_mts, data.peso_unit_tn, data.peso_total_tn, data.cant_litros, data.cod_estado_carga, data.origen, data.destino, data.fec_retiro, data.hora_retiro, data.fec_destino, data.hora_destino, data.comentario, data.domicilio_origen, data.domicilio_destino, data.receptor_carga, data.valor_carga, data.distancia_recorrido], cb)
+API_Model.add_freight = (data, cb) => conn.query('INSERT INTO cargas (cod_usuario, cod_tipo_carga, req_refrigeracion, es_carga_peligrosa, es_carga_apilable, cod_tipo_producto, cant_unit, peso_unit_kg, peso_total_kg, largo_mts, ancho_mts, alto_mts, peso_unit_tn, peso_total_tn, cant_litros, cod_estado_carga, origen, destino, fec_retiro, hora_retiro, fec_destino, comentario, domicilio_origen, domicilio_destino, receptor_carga, valor_carga, distancia_recorrido) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27)', [data.cod_usuario, data.cod_tipo_carga, data.req_refrigeracion, data.es_carga_peligrosa, data.es_carga_apilable, data.cod_tipo_producto, data.cant_unit, data.peso_unit_kg, data.peso_total_kg, data.largo_mts, data.ancho_mts, data.alto_mts, data.peso_unit_tn, data.peso_total_tn, data.cant_litros, data.cod_estado_carga, data.origen, data.destino, data.fec_retiro, data.hora_retiro, data.fec_destino, data.comentario, data.domicilio_origen, data.domicilio_destino, data.receptor_carga, data.valor_carga, data.distancia_recorrido], cb)
 
 //Todos las cargas de un usuario
 API_Model.getCargasUser = (id, cb) => conn.query('SELECT * FROM cargas WHERE cod_usuario = $1', [id], cb)
@@ -82,7 +87,7 @@ API_Model.getOneCargaUser = (id, cb) => conn.query('SELECT * FROM cargas WHERE c
 API_Model.deleteCarga = (id, cb) => conn.query('DELETE FROM cargas WHERE cod_carga = $1', [id], cb)
 
 //Actualizar una Carga
-API_Model.updateCarga = (data, cb) => conn.query('UPDATE cargas SET cod_carga = $1, req_refrigeracion = $2, es_carga_peligrosa = $3, es_carga_apilable = $4, cod_tipo_producto = $5, cant_unit = $6, peso_unit_kg = $7, peso_total_kg = $8, largo_mts = $9, ancho_mts = $10, alto_mts = $11, peso_unit_tn = $12, peso_total_tn = $13, cant_litros = $14, ciudad_origen = $15, ciudad_destino = $16, fec_retiro = $17, hora_retiro = $18, fec_destino = $19, hora_destino = $20, comentario = $21, domicilio_origen = $22, domicilio_destino = $23, origen = $24, destino = $25, receptor_carga = $26, valor_carga = $27, distancia_recorrido = $28 WHERE cod_carga = $1', [data.cod_carga, data.req_refrigeracion, data.es_carga_peligrosa, data.es_carga_apilable, data.cod_tipo_producto, data.cant_unit, data.peso_unit_kg, data.peso_total_kg, data.largo_mts, data.ancho_mts, data.alto_mts, data.peso_unit_tn, data.peso_total_tn, data.cant_litros, data.ciudad_origen, data.ciudad_destino, data.fec_retiro, data.hora_retiro, data.fec_destino, data.hora_destino, data.comentario, data.domicilio_origen, data.domicilio_destino, data.origen, data.destino, data.receptor_carga, data.valor_carga, data.distancia_recorrido], cb)
+API_Model.updateCarga = (data, cb) => conn.query('UPDATE cargas SET req_refrigeracion = $2, es_carga_peligrosa = $3, es_carga_apilable = $4, cod_tipo_producto = $5, cant_unit = $6, peso_unit_kg = $7, peso_total_kg = $8, largo_mts = $9, ancho_mts = $10, alto_mts = $11, peso_unit_tn = $12, peso_total_tn = $13, cant_litros = $14, fec_retiro = $15, hora_retiro = $16, fec_destino = $17, comentario = $18, domicilio_origen = $19, domicilio_destino = $20, origen = $21, destino = $22, receptor_carga = $23, valor_carga = $24, distancia_recorrido = $25 WHERE cod_carga = $1', [data.cod_carga, data.req_refrigeracion, data.es_carga_peligrosa, data.es_carga_apilable, data.cod_tipo_producto, data.cant_unit, data.peso_unit_kg, data.peso_total_kg, data.largo_mts, data.ancho_mts, data.alto_mts, data.peso_unit_tn, data.peso_total_tn, data.cant_litros, data.fec_retiro, data.hora_retiro, data.fec_destino, data.comentario, data.domicilio_origen, data.domicilio_destino, data.origen, data.destino, data.receptor_carga, data.valor_carga, data.distancia_recorrido], cb)
 
 //GetAll cargas para poder ver que provincias tienen o no cargas
 API_Model.getAllCargas = (cb) => conn.query('SELECT * FROM cargas', cb)
@@ -105,7 +110,6 @@ API_Model.getTipoEstadoSolicitud = (id, cb) => conn.query('SELECT * FROM estados
 
 //Get para poner el dador de carga en la card
 API_Model.getNameUser = (id, cb) => conn.query('SELECT razon_social, cuit_cuil FROM usuarios WHERE cod_usuario = $1', [id], cb)
-
 
 //Actualizar estado de una Carga
 API_Model.updateEstadoCarga = (data, cb) => conn.query('UPDATE cargas SET cod_estado_carga = $2 WHERE cod_carga = $1', [data.codigo_carga, data.cod_estado_carga], cb)

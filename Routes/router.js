@@ -19,12 +19,16 @@ LOS FORMDATA, como que ahora no necesitan a multer */
 //Registración
 router.post('/register' /* , upload.none() */ , API_Controller.register);
 
+//Busco Email ya registrado
+router.get('/buscoEmail/:email', API_Controller.getOneEmail);
+
 //Log In
 router.post('/logIn', API_Controller.logIn);
 
 //Perfil
 router.post('/update_profile' /* , upload.none() */ , API_Controller.update_profile);
 router.post('/update_cuenta' /* , upload.none() */ , API_Controller.update_cuenta);
+router.put('/update_password' /* , upload.none() */ , API_Controller.update_password);
 router.get('/dashboard/:cod_usuario', API_Controller.getOne);
 router.get('/my_profile/:cod_usuario', API_Controller.getOne);
 

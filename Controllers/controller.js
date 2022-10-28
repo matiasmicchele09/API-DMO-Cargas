@@ -17,6 +17,21 @@ API_Controller.register = (req, res) => {
     })
 }
 
+//Busco Email ya registrado
+API_Controller.getOneEmail = (req, res) => {
+    let email = req.params.email;
+    API_Model.getOneEmail(email, (err, rows) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                msg: `Bad Request: No se puedo encontrar el Email. ${err}`
+            })
+        } else {
+            res.end(JSON.stringify(rows.rows))
+        }
+    })
+}
+
 //Log In
 API_Controller.logIn = (req, res) => {
     let obj = Object.assign({}, req.body);
@@ -49,7 +64,7 @@ API_Controller.update_profile = (req, res) => {
     })
 }
 
-//Cuenta
+//Actualización de Cuenta
 API_Controller.update_cuenta = (req, res) => {
     let obj = Object.assign({}, req.body);
     console.log("Update Cuenta", obj);
@@ -61,6 +76,18 @@ API_Controller.update_cuenta = (req, res) => {
     })
 }
 
+//Actualización de contraseña
+API_Controller.update_password = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log("Update Password:", obj);
+    API_Model.update_password(obj, (err) => {
+        return res.status(400).json({
+            ok: false,
+            msg: `Bad Request: No se pudo realizar la Actualización de la Contraseña. ${err}`
+        })
+    })
+}
+
 //GetOne datos de usuario
 API_Controller.getOne = (req, res) => {
     let cod_usuario = req.params.cod_usuario;
@@ -68,7 +95,7 @@ API_Controller.getOne = (req, res) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: `Bad Request: No se encontrar al Usuario. ${err}`
+                msg: `Bad Request: No se pudo encontrar al Usuario. ${err}`
             })
         } else {
             res.end(JSON.stringify(rows.rows))

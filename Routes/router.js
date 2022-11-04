@@ -157,8 +157,9 @@ router.get('/downloadImg/:nombre_archivo', API_Controller.downloadImg);
 router.post('/payWithMP', async(req, res) => {
     const obj = Object.assign({}, req.body);
     console.log(obj);
-    let solicitud = obj.descripcion.split("-")[0].trim()
-    console.log(solicitud)
+    let solicitud = obj.descripcion.split("-")[0].trim(),
+        carga = obj.descripcion.split("-")[1].trim();
+    //console.log(solicitud)
     let preference = {
         items: [{
             title: obj.descripcion,
@@ -166,21 +167,25 @@ router.post('/payWithMP', async(req, res) => {
             quantity: obj.cantidad,
         }],
         back_urls: {
-            "success": `http://localhost:3000/feedback/${solicitud}`,
-            "failure": `http://localhost:3000/feedback/${solicitud}`,
-            "pending": `http://localhost:3000/feedback/${solicitud}`
+            "success": `http://localhost:3000/feedback/${solicitud}/${carga}`,
+            "failure": `http://localhost:3000/feedback/${solicitud}/${carga}`,
+            "pending": `http://localhost:3000/feedback/${solicitud}/${carga}`
         },
         auto_return: "approved",
     }
+
     const response = await mercadopago.preferences.create(preference);
     const preferenceId = response.body.id;
     res.send({ preferenceId })
 });
 
-router.get('/feedback/:solicitud', function(req, res) {
-    let solicitud = req.params.solicitud;
-    console.log(solicitud);
-    console.log("Query", req.query);
+router.get('/feedback/:solicitud/:carga', function(req, res) {
+    let solicitud = req.params.solicitud,
+        carga = req.params.carga;
+    console.log("solicitud", solicitud);
+    console.log("carga", carga);
+
+    //console.log("Query", req.query);
     let obj = {
         Request: solicitud,
         Payment: req.query.payment_id,
@@ -203,8 +208,11 @@ router.get('/feedback/:solicitud', function(req, res) {
                 msg: `Bad Request: No se pudo agregar el Pago. ${err}`
             })
         } else {
-            res.sendStatus(200);
-            //return res.json(obj);       
+            /*  res.sendStatus(200);
+             return res.json(obj);        */
+
+            //res.redirect('http://127.0.0.1:5000/terms_conds.html')
+            res.redirect(`http://localhost:5000/finish_request.html?request=${solicitud}&cod_carga=${carga}`)
         }
     })
 

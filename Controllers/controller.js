@@ -768,6 +768,19 @@ API_Controller.getPay = (req, res) => {
     })
 }
 
+API_Controller.add_pay = (objeto, res) => {
+    API_Model.add_pay(objeto, (err) => {
+        if (err) {
+            /*  return res.status(400).json({
+                 ok: false,
+                 msg: `Bad Request: No se pudo agregar el Pago. ${err}`
+             }) */
+        } else {
+            //res.sendStatus(200);
+            return res.json(objeto);
+        }
+    })
+}
 
 
 module.exports = API_Controller;

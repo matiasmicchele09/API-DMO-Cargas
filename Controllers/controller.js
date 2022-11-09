@@ -206,11 +206,13 @@ API_Controller.updateTruck = (req, res) => {
 //Eliminar Camión
 API_Controller.deleteTruck = (req, res, next) => {
     let patente_camion = req.params.patente_camion
+    console.log(patente_camion);
     API_Model.deleteTruck(patente_camion, (err, rows) => {
+        console.log(err);
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: `Bad Request: No se eliminar el Camión. ${err}`
+                msg: `Bad Request: No se pudo eliminar el Camión. ${err}`
             })
         }
     })
@@ -239,7 +241,7 @@ API_Controller.add_carroceria = (req, res) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: `Bad Request: No se agregar la Carrocería. ${err}`
+                msg: `Bad Request: No se pudo agregar la Carrocería. ${err}`
             })
         } else {
             res.sendStatus(200);
@@ -254,7 +256,7 @@ API_Controller.getOneCarroceria = (req, res) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: `Bad Request: No se editar la Carrocería. ${err}`
+                msg: `Bad Request: No se pudo editar la Carrocería. ${err}`
             })
         } else {
             res.end(JSON.stringify(rows.rows))

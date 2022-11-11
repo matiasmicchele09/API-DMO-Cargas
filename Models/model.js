@@ -14,9 +14,12 @@ API_Model.getOneEmail = (id, cb) => conn.query('SELECT email FROM usuarios WHERE
 API_Model.logIn = (data, cb) => conn.query('SELECT cod_usuario, email, password, tipo_usuario FROM usuarios WHERE email = $1 AND password = $2', [data.email, data.password], cb)
 
 //Actualizar datos del usuario
-API_Model.update_profile = (data, cb) => conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, fec_nacim = $3, nom_img_lic_frente = $4, nom_img_lic_dorso = $5, nom_img_curso = $6, nro_telefono = $8 WHERE cod_usuario = $7', [data.razon_social, data.cuit_cuil, data.fec_nacim, data.nom_img_lic_frente, data.nom_img_lic_dorso, data.nom_img_curso, data.cod_usuario, data.nro_telefono], cb)
+API_Model.update_profile = (data, cb) => conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, fec_nacim = $3, nro_telefono = $5 WHERE cod_usuario = $4', [data.razon_social, data.cuit_cuil, data.fec_nacim, data.cod_usuario, data.nro_telefono], cb)
 API_Model.update_cuenta = (data, cb) => conn.query('UPDATE usuarios SET email = $1, password = $2 WHERE cod_usuario = $3', [data.email, data.password, data.cod_usuario], cb)
 API_Model.update_password = (data, cb) => conn.query('UPDATE usuarios SET password = $2 WHERE email = $1', [data.email, data.password], cb)
+API_Model.uploadLicFrente = (data, cb) => conn.query('UPDATE usuarios SET nom_img_lic_frente = $2 WHERE cod_usuario = $1', [data.cod_usuario, data.nom_img_lic_frente], cb)
+API_Model.uploadLicDorso = (data, cb) => conn.query('UPDATE usuarios SET nom_img_lic_dorso = $2 WHERE cod_usuario = $1', [data.cod_usuario, data.nom_img_lic_dorso], cb)
+API_Model.uploadImgCurso = (data, cb) => conn.query('UPDATE usuarios SET nom_img_curso = $2 WHERE cod_usuario = $1', [data.cod_usuario, data.nom_img_curso], cb)
 
 //Obtener todos los datos de UN usuario
 API_Model.getOne = (id, cb) => conn.query('SELECT * FROM usuarios WHERE cod_usuario = $1', [id], cb)
@@ -38,7 +41,7 @@ API_Model.getOneTruck = (patente, cb) => conn.query('SELECT * FROM camiones WHER
 API_Model.updateTruck = (data, cb) => conn.query('UPDATE camiones SET patente_camion = $1, marca = $2, modelo = $3, anio = $4, cod_tipo_camion = $5 WHERE patente_camion = $1', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_tipo_camion], cb)
 
 //Eliminar Camión
-API_Model.deleteTruck = (id, cb) => conn.query('DELETE FROM camiones WHERE patente_camion = $1', [id], cb)
+API_Model.logicDeleteTruck = (data, cb) => conn.query('UPDATE camiones SET eliminado = $2 WHERE patente_camion = $1', [data.patente_camion, data.eliminado], cb)
 
 //Agregar Carrocería
 API_Model.add_carroceria = (data, cb) => conn.query('INSERT INTO carrocerias (patente_carroceria, cant_ejes, anio, cod_usuario, cod_tipo_carroceria) VALUES ($1, $2, $3, $4, $5)', [data.patente_carroceria, data.cant_ejes, data.anio, data.cod_usuario, data.cod_tipo_carroceria], cb)
@@ -48,7 +51,7 @@ API_Model.getOneCarroceria = (patente_carroceria, cb) => conn.query('SELECT * FR
 API_Model.updateCarroceria = (data, cb) => conn.query('UPDATE carrocerias SET patente_carroceria = $1, cant_ejes = $2, anio = $3, cod_tipo_carroceria = $4 WHERE patente_carroceria = $1', [data.patente_carroceria, data.cant_ejes, data.anio, data.cod_tipo_carroceria], cb)
 
 //Eliminar Carrocería
-API_Model.deleteCarroceria = (id, cb) => conn.query('DELETE FROM carrocerias WHERE patente_carroceria = $1', [id], cb)
+API_Model.logicDeleteCarroceria = (data, cb) => conn.query('UPDATE carrocerias SET eliminado = $2 WHERE patente_carroceria = $1', [data.patente_carroceria, data.eliminado], cb)
 
 //Todos los camiones de un usuario
 API_Model.getTrucksUser = (id, cb) => conn.query('SELECT * FROM camiones WHERE cod_usuario = $1', [id], cb)

@@ -203,11 +203,10 @@ API_Controller.updateTruck = (req, res) => {
     })
 }
 
-//Eliminar Camión
-API_Controller.deleteTruck = (req, res, next) => {
-    let patente_camion = req.params.patente_camion
-    console.log(patente_camion);
-    API_Model.deleteTruck(patente_camion, (err, rows) => {
+//Eliminar Camión (Lógicamente)
+API_Controller.logicDeleteTruck = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    API_Model.logicDeleteTruck(obj, (err) => {
         console.log(err);
         if (err) {
             return res.status(400).json({
@@ -276,14 +275,15 @@ API_Controller.updateCarroceria = (req, res) => {
     })
 }
 
-//Eliminar Carrocería
-API_Controller.deleteCarroceria = (req, res, next) => {
-    let patente_carroceria = req.params.patente_carroceria
-    API_Model.deleteCarroceria(patente_carroceria, (err, rows) => {
+//Eliminar Carrocería (Lógicamente)
+API_Controller.logicDeleteCarroceria = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    API_Model.logicDeleteCarroceria(obj, (err) => {
+        console.log(err);
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: `Bad Request: No se pudo eliminar la Carrocería. ${err}`
+                msg: `Bad Request: No se pudo eliminar el Camión. ${err}`
             })
         }
     })
@@ -588,6 +588,40 @@ API_Controller.uploadFileFinViaje = (req, res) => {
 }
 
 
+API_Controller.uploadLicFrente = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log("Update Nombre Licencia Conducir Frente: ", obj);
+    API_Model.uploadLicFrente(obj, (err) => {
+        return res.status(400).json({
+            ok: false,
+            msg: `Bad Request: No se actualizar el Nombre Archivo Solicitud Retiro de Carga. ${err}`
+        })
+    })
+}
+
+API_Controller.uploadLicDorso = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log("Update Nombre Licencia Conducir Dorso: ", obj);
+    API_Model.uploadLicDorso(obj, (err) => {
+        return res.status(400).json({
+            ok: false,
+            msg: `Bad Request: No se actualizar el Nombre Archivo Solicitud Retiro de Carga. ${err}`
+        })
+    })
+}
+
+
+API_Controller.uploadImgCurso = (req, res) => {
+    let obj = Object.assign({}, req.body);
+    console.log("Update Nombre Curso: ", obj);
+    API_Model.uploadImgCurso(obj, (err) => {
+        return res.status(400).json({
+            ok: false,
+            msg: `Bad Request: No se actualizar el Nombre Archivo Solicitud Retiro de Carga. ${err}`
+        })
+    })
+}
+
 //Get One Solicitud
 API_Controller.getOneSolicitud = (req, res) => {
     let cod_solicitud = req.params.cod_solicitud;
@@ -717,7 +751,7 @@ API_Controller.downloadFile = (req, res) => {
 
 API_Controller.uploadImages = (req, res) => {
     let fileImg = req.files.file;
-    console.log(fileImg);
+    //console.log(fileImg);
 
     if (fileImg.truncated) {
         return res.status(400).json({
@@ -743,7 +777,7 @@ API_Controller.uploadImages = (req, res) => {
 API_Controller.downloadImg = async(req, res) => {
     const nombre_archivo = req.params.nombre_archivo.trim();
     const pathArchivo = `C:/Users/usuario/Desktop/DMO-Cargas-2022/API/files_users/${nombre_archivo}`;
-    console.log("pathArchivo", pathArchivo);
+    // console.log("pathArchivo", pathArchivo);
 
     if (!fs.existsSync(pathArchivo)) {
         return res.status(400).json({

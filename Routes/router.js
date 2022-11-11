@@ -31,6 +31,9 @@ router.post('/update_cuenta' /* , upload.none() */ , API_Controller.update_cuent
 router.put('/update_password' /* , upload.none() */ , API_Controller.update_password);
 router.get('/dashboard/:cod_usuario', API_Controller.getOne);
 router.get('/my_profile/:cod_usuario', API_Controller.getOne);
+router.put('/uploadLicFrente', API_Controller.uploadLicFrente);
+router.put('/uploadLicDorso', API_Controller.uploadLicDorso);
+router.put('/uploadImgCurso', API_Controller.uploadImgCurso);
 
 /* --------------------------------------- TRANSPORTISTAS --------------------------------------- */
 //Get para Tipo Camiones
@@ -49,7 +52,8 @@ router.get('/my_truck/:patente', API_Controller.getOneTruck);
 router.put('/update_truck', /*  upload.none(), */ API_Controller.updateTruck);
 
 //Eliminar Camión
-router.delete('/delete_camion/:patente_camion', API_Controller.deleteTruck);
+//router.delete('/delete_camion/:patente_camion', API_Controller.deleteTruck);
+router.put('/logicDeleteTruck', API_Controller.logicDeleteTruck);
 
 //Agregar Carroceria
 router.post('/add_carroceria', /* upload.none(), */ API_Controller.add_carroceria);
@@ -59,7 +63,8 @@ router.get('/mi_carroceria/:patente_carroceria', API_Controller.getOneCarroceria
 router.put('/update_carroceria', /* upload.none(), */ API_Controller.updateCarroceria);
 
 //Eliminar Carroceria
-router.delete('/delete_carroceria/:patente_carroceria', API_Controller.deleteCarroceria);
+//router.delete('/delete_carroceria/:patente_carroceria', API_Controller.deleteCarroceria);
+router.put('/logicDeleteCarroceria', API_Controller.logicDeleteCarroceria);
 
 //Todos los camiones de un usuario
 router.get('/getTrucksUser/:cod_usuario', API_Controller.getTrucksUser);

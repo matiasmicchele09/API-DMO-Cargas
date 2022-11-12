@@ -9,7 +9,8 @@ const API_Controller = require('../Controllers/controller'),
     router = express.Router();
 
 mercadopago.configure({
-    access_token: "TEST-2384579572312936-102011-f2d63a0ca1cf795b63705995b23716fc-306506163"
+    //access_token: "TEST-2384579572312936-102011-f2d63a0ca1cf795b63705995b23716fc-306506163" //Credencial de Prueba de Matias
+    access_token: "TEST-5224627245709178-093016-ffbfcbf7a6d1e4fad5cdea10456d7bbe-205560679" //Credencial de Prueba de Julio
 });
 
 //upload.none() para cuando se envian FormData

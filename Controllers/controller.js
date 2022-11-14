@@ -791,8 +791,13 @@ API_Controller.downloadImg = async(req, res) => {
 
 //Consultar Estado del Pago
 API_Controller.getPay = (req, res) => {
-    let cod_solicitud = req.params.cod_solicitud;
-    API_Model.getPay(cod_solicitud, (err, rows) => {
+    /* let cod_solicitud = req.params.cod_solicitud;
+    let cod_op = req.params.cod_op; */
+    let obj = {
+        cod_solicitud: req.params.cod_solicitud,
+        cod_operacion: req.params.cod_op
+    }
+    API_Model.getPay(obj, (err, rows) => {
         if (err) {
             return res.status(400).json({
                 ok: false,

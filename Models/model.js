@@ -139,7 +139,7 @@ API_Model.getNameFile = (id, cb) => conn.query('SELECT form_retiro, form_conform
 API_Model.add_pay = (data, cb) => conn.query('INSERT INTO pagos_cargas (cod_solicitud, cod_operacion, estado, orden_comercial) VALUES ($1, $2, $3, $4)', [data.Request, data.Payment, data.Status, data.MerchantOrder], cb);
 
 //Consultando Estado del Pago
-API_Model.getPay = (id, cb) => conn.query('SELECT * FROM pagos_cargas WHERE cod_solicitud = $1', [id], cb)
+API_Model.getPay = (data, cb) => conn.query('SELECT * FROM pagos_cargas WHERE cod_solicitud = $1 AND cod_operacion = $2', [data.cod_solicitud, data.cod_operacion], cb)
 
 API_Model.close = () => conn.end()
 

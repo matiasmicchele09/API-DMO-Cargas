@@ -217,8 +217,10 @@ router.get('/feedback/:solicitud/:carga', function(req, res) {
             /*  res.sendStatus(200);
              return res.json(obj);        */
 
-            //res.redirect('http://127.0.0.1:5000/terms_conds.html')
-            res.redirect(`http://localhost:5000/finish_request.html?request=${solicitud}&cod_carga=${carga}`)
+            console.log("obj.Payment", obj.Payment);
+
+            //res.redirect(`http://localhost:5000/finish_request.html?request=${solicitud}&cod_carga=${carga}`)
+            res.redirect(`http://localhost:5000/finish_request.html?request=${solicitud}&cod_carga=${carga}&payment=${obj.Payment}`)
         }
     })
 
@@ -265,6 +267,6 @@ router.post("/create_preference", (req, res) => {
 
 
 //Consultar Estado del Pago
-router.get('/getPay/:cod_solicitud', API_Controller.getPay);
+router.get('/getPay/:cod_solicitud/:cod_op', API_Controller.getPay);
 
 module.exports = router;

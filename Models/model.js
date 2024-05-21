@@ -11,7 +11,7 @@ API_Model.register = (data, cb) => conn.query('INSERT INTO usuarios (razon_socia
 API_Model.getOneEmail = (id, cb) => conn.query('SELECT email FROM usuarios WHERE email = $1', [id], cb)
 
 //Log In
-API_Model.logIn = (data, cb) => conn.query('SELECT cod_usuario, email, password, tipo_usuario FROM usuarios WHERE email = $1 AND password = $2', [data.email, data.password], cb)
+ API_Model.logIn = (data, cb) => conn.query('SELECT cod_usuario, email, password, tipo_usuario FROM usuarios WHERE email = $1 AND password = $2', [data.email, data.password], cb)
 
 //Actualizar datos del usuario
 API_Model.update_profile = (data, cb) => conn.query('UPDATE usuarios SET razon_social = $1, cuit_cuil = $2, fec_nacim = $3, nro_telefono = $5 WHERE cod_usuario = $4', [data.razon_social, data.cuit_cuil, data.fec_nacim, data.cod_usuario, data.nro_telefono], cb)

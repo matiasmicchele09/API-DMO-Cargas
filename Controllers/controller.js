@@ -220,6 +220,7 @@ API_Controller.logicDeleteTruck = (req, res) => {
 //Todos los camiones de un usuario
 API_Controller.getTrucksUser = (req, res) => {
     let cod_usuario = req.params.cod_usuario;
+    console.log(req);
     API_Model.getTrucksUser(cod_usuario, (err, rows) => {
         if (err) {
             return res.status(400).json({

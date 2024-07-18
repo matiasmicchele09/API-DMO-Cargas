@@ -207,13 +207,19 @@ API_Controller.updateTruck = (req, res) => {
 API_Controller.logicDeleteTruck = (req, res) => {
     let obj = Object.assign({}, req.body);
     API_Model.logicDeleteTruck(obj, (err) => {
-        console.log(err);
+        console.log(obj);    
         if (err) {
             return res.status(400).json({
                 ok: false,
                 msg: `Bad Request: No se pudo eliminar el Camión. ${err}`
-            })
+            });            
         }
+        // Enviar una respuesta exitosa si la actualización fue exitosa
+        res.json({
+            ok: true,
+            msg: 'Estado del camión actualizado correctamente'
+          });  
+              
     })
 }
 

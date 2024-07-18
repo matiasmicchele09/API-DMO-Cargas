@@ -38,7 +38,7 @@ API_Model.add_truck = (data, cb) => conn.query('INSERT INTO camiones (patente_ca
 
 //Editar Camión
 API_Model.getOneTruck = (patente, cb) => conn.query('SELECT * FROM camiones WHERE patente_camion = $1', [patente], cb)
-API_Model.updateTruck = (data, cb) => conn.query('UPDATE camiones SET patente_camion = $1, marca = $2, modelo = $3, anio = $4, cod_tipo_camion = $5 WHERE patente_camion = $1', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_tipo_camion], cb)
+API_Model.updateTruck = (data, cb) => conn.query('UPDATE camiones SET patente_camion = $1, marca = $2, modelo = $3, anio = $4, cod_tipo_camion = $5, eliminado = $6 WHERE patente_camion = $1', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_tipo_camion, data.eliminado], cb)
 
 //Eliminar Camión
 API_Model.logicDeleteTruck = (data, cb) => conn.query('UPDATE camiones SET eliminado = $2 WHERE patente_camion = $1', [data.patente_camion, data.eliminado], cb)

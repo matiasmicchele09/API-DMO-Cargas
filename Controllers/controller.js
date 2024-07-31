@@ -196,10 +196,18 @@ API_Controller.updateTruck = (req, res) => {
     let obj = Object.assign({}, req.body);
     console.log("Update Camión: ", obj);
     API_Model.updateTruck(obj, (err) => {
-        return res.status(400).json({
-            ok: false,
-            msg: `Bad Request: No se pudo realizar la actualización de los datos del Camión. ${err}`
-        })
+        console.log("error", err);            
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                msg: `Bad Request: No se pudo realizar la actualización de los datos del Camión. ${err}`
+            })
+        } else {
+            return res.json({
+                ok: true,
+                msg: 'Actualización realizada con éxito'
+            })
+        }
     })
 }
 
@@ -207,7 +215,7 @@ API_Controller.updateTruck = (req, res) => {
 API_Controller.logicDeleteTruck = (req, res) => {
     let obj = Object.assign({}, req.body);
     API_Model.logicDeleteTruck(obj, (err) => {
-        console.log(obj);    
+        console.log(obj);          
         if (err) {
             return res.status(400).json({
                 ok: false,

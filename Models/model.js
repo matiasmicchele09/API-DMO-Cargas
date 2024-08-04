@@ -34,11 +34,13 @@ API_Model.getCarroceria = (cb) => conn.query('SELECT * FROM tipos_carrocerias', 
 API_Model.getOneTipoCarroceria = (id, cb) => conn.query('SELECT descripcion FROM tipos_carrocerias WHERE cod_tipo_carroceria = $1', [id], cb)
 
 //Agregar Camión
-API_Model.add_truck = (data, cb) => conn.query('INSERT INTO camiones (patente_camion, marca, modelo, anio, cod_usuario, cod_tipo_camion) VALUES ($1, $2, $3, $4, $5, $6)', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_usuario, data.cod_tipo_camion], cb)
+//API_Model.add_truck = (data, cb) => conn.query('INSERT INTO camiones (patente_camion, marca, modelo, anio, cod_usuario, cod_tipo_camion, eliminado) VALUES ($1, $2, $3, $4, $5, $6, $7)', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_usuario, data.cod_tipo_camion], cb)
+API_Model.add_truck = (data, cb) => conn.query('INSERT INTO camiones (patente_camion, marca, modelo, anio, cod_tipo_camion, cod_usuario, eliminado) VALUES ($1, $2, $3, $4, $5, $6, $7)', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_tipo_camion, data.cod_usuario, data.eliminado], cb)
 
 //Editar Camión
 API_Model.getOneTruck = (patente, cb) => conn.query('SELECT * FROM camiones WHERE patente_camion = $1', [patente], cb)
-API_Model.updateTruck = (data, cb) => conn.query('UPDATE camiones SET patente_camion = $1, marca = $2, modelo = $3, anio = $4, cod_tipo_camion = $5, eliminado = $6 WHERE patente_camion = $1', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_tipo_camion, data.eliminado], cb)
+//API_Model.updateTruck = (data, cb) => conn.query('UPDATE camiones SET patente_camion = $1, marca = $2, modelo = $3, anio = $4, cod_tipo_camion = $5, eliminado = $6 WHERE patente_camion = $1', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_tipo_camion, data.eliminado], cb)
+API_Model.updateTruck = (data, cb) => conn.query('UPDATE camiones SET patente_camion = $1, marca = $2, modelo = $3, anio = $4, cod_tipo_camion = $5 WHERE patente_camion = $1', [data.patente_camion, data.marca, data.modelo, data.anio, data.cod_tipo_camion], cb)
 
 //Eliminar Camión
 API_Model.logicDeleteTruck = (data, cb) => conn.query('UPDATE camiones SET eliminado = $2 WHERE patente_camion = $1', [data.patente_camion, data.eliminado], cb)
